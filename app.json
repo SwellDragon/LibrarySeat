@@ -1,0 +1,49 @@
+{
+  "tabBar": {
+    "color": "#7A7E83",
+    "selectedColor": "#3cc51f",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "/image/首页.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/occupy/occupy",
+        "iconPath": "/image/占座.png",
+        "text": "占座"
+      },
+      {
+        "pagePath": "pages/team/team",
+        "iconPath": "/image/朋友.png",
+        "text": "朋友"
+      },
+      {
+        "pagePath":"pages/info/info",
+        "iconPath": "/image/信息.png",
+        "text": "信息"
+      }
+    ]
+  },
+  "pages": [
+    "pages/checkuser/checkuser",
+    "pages/test/test",
+    "pages/occupy/occupy",
+    
+    "pages/register/register",
+    "pages/team/team",
+    "pages/info/info",
+    "pages/index/index",
+    "pages/logs/logs"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "WeChat",
+    "navigationBarTextStyle": "black"
+  },
+  
+  "sitemapLocation": "sitemap.json"
+}

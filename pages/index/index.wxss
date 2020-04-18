@@ -1,0 +1,44 @@
+/**index.wxss**/
+/* .view1{
+  height: 500rpx;
+  width: 100%;
+  background-color: rebeccapurple;
+}
+
+.view2{
+  height: 400rpx;
+  width: 80%;
+  background-color: red;
+}
+.view3{
+  height: 300rpx;
+  width: 60%;
+  background-color: saddlebrown;
+} */
+.time{
+  font-size: 15px
+}
+
+.detail{
+height: 50rpx;
+width: 100%;
+display:inline-flex;
+
+}
+
+
+
+.signbut{
+  width: 10%;
+  font-size: 15px;
+  background-color: greenyellow;
+  text-align: center;
+}
+
+.cancelbut{
+  width: 20%;
+  font-size: 15px;
+  background-color: red;
+  text-align: center;
+  float: right;
+}

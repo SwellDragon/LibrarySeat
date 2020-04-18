@@ -1,0 +1,2 @@
+<!--pages/checkuser/checkuser.wxml-->
+<button open-type="getUserInfo" bindgetuserinfo="retrunUserInfo">正在获取信息</button>

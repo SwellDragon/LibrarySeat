@@ -1,0 +1,31 @@
+<!--index.wxml-->
+<!-- <view class="view1" bindtap="view1click" id="v1" data-title="vv1" data-id="100">
+  {{name}}
+  <view class="view2"  bindtap="view2click" id="v2">
+    {{stuid}}
+    <view class="view3"  bindtap="view3click" id="v3">
+    view3
+
+    </view>
+
+
+  </view>
+
+</view> -->
+
+<view>{{name}}{{stuid}}同学你好</view>
+<view font-size="25px">预约</view>
+<view wx:for="{{seatmsg}}" wx:key="_id" wx:for-item="item" wx:for-index="index">
+  <view>
+    <view>{{item.addr}} {{item.floor}}层{{item.room}} {{item.row}}行 {{item.row}}列 </view>
+    <view class="time">{{item.start_time}}-{{item.end_time}}</view>
+    <view class="detail">
+      <text>{{is_sign[index]?'已签到':'未签到'}} </text>
+      <text>{{is_late[index]?'迟到':' '}}</text>
+      <text>{{is_free[index]?'空闲':' '}}</text>
+      <text color="red">{{is_cancel[index]?'已取消':' '}}</text>
+      <text class="signbut" wx:if="{{can_sign[index]}}" bindtap="sign" data-index="{{index}}" data-item="{{item}}">签到</text>
+      <text class="cancelbut" wx:if="{{show_cancel[index]}}" bindtap="cancel" data-index="{{index}}" data-item="{{item}}">取消预约</text>
+    </view>
+  </view>
+</view>

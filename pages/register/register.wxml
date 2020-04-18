@@ -1,0 +1,24 @@
+<!--pages/register/register.wxml-->
+
+<view class="wrap">
+  <view>你尚未进行注册，请注册</view>
+  <view class="register">
+    <form bindsubmit="register">
+      <view class="username">
+        <label>姓名</label>
+        <input type="text" placeholder="请输入姓名" name="username"> </input>
+        
+      </view>
+      <view class="stuid">
+        <view>学号</view>
+        <input type="number" placeholder="请输入学号" name="stuid"></input>
+      </view>
+      <!-- <view wx:if="{{isempty}}" class="errMsg">姓名或学号为空</view>
+      <view wx:elif="{{iserr}}" class="errMsg">姓名或学号不正确</view>
+      <view wx:elif="{{isregister}}" class="errMsg">姓名和学号已被注册，请联系管理员</view> -->
+      <view class="errMsg">{{errmsg}}</view>
+
+      <button form-type="submit">注册</button>
+    </form>
+  </view>
+</view>

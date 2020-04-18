@@ -1,0 +1,15 @@
+[
+  {
+    "name": "querydata",
+    "value": {
+      "querydata": {
+        "addr": "老图书馆",
+        "day": "今日",
+        "endtime": "23:00",
+        "floor": "一层",
+        "room": "101（报刊阅览室）",
+        "starttime": "6:00"
+      }
+    }
+  }
+]
