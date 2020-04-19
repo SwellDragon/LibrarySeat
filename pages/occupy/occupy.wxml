@@ -10,20 +10,20 @@
       <view class="seletmsg">当前选择：{{multiArray[0][multiIndex[0]]}}，{{multiArray[1][multiIndex[1]]}}，{{multiArray[2][multiIndex[2]]}},{{multiArray[3][multiIndex[3]]}}</view>
     </picker>
     <view class="time">
-    <picker name="starttime" mode="time" value="{{starttime}}" start="06:00" end="{{endtime}}" bindchange="startTimeChange">
-    <view class="picker">
-      开始时间: {{starttime}}
-    </view>
-  </picker>
+      <picker name="starttime" mode="time" value="{{starttime}}" start="06:00" end="{{endtime}}" bindchange="startTimeChange">
+        <view class="picker">
+          开始时间: {{starttime}}
+        </view>
+      </picker>
 
-  <picker name="endtime" class="endtime" mode="time" value="{{endtime}}" start="{{starttime}}" end="23:00" bindchange="endTimeChange">
-    <view class="picker">
-       结束时间: {{endtime}}
+      <picker name="endtime" class="endtime" mode="time" value="{{endtime}}" start="{{starttime}}" end="23:00" bindchange="endTimeChange">
+        <view class="picker">
+          结束时间: {{endtime}}
+        </view>
+      </picker>
+      <button size="mini" form-type="submit">查询</button>
     </view>
-  </picker>
-  <button size="mini" form-type="submit">查询</button>
-    </view>
-    
+
   </form>
 </view>
 
@@ -38,7 +38,35 @@
   <view class='view-price-num'>
     <image class='view-price-img' src='img/noseat.png'></image>有人</view>
 </view>
+<!-- 座位排列 -->
+<view wx:if="{{isquery}}">
+<text>{{querydata.addr}} {{querydata.floor}} {{querydata.room}}{{querydata.day}}{{querydata.starttime}}-{{querydata.endtime}}</text>
+  <!-- for循环每一行 -->
+  <view wx:for="{{row}}" wx:for-index="rowindex">
+    <!-- 最上方列标识 -->
+    <view class="seat-top" wx:if="{{rowindex==0}}">
+      <text wx:for="{{col}}" wx:for-index="colindex">{{colindex}}</text>
+    </view>
+    <!-- 若不是最上方，则显示座位 -->
+    <view class="seat-top" wx:else>
+      <block wx:for="{{col}}" wx:for-index="colindex">
+        <view wx:if="{{colindex==0}}">
+          <text>{{rowindex}} </text>
+        </view>
+        <view wx:else>
+          <image class='view-price-img-up' src='./img/{{seatmsg[rowindex-1][colindex-1] ? ((selectseat[0]==rowindex && selectseat[1]==colindex) ? "select.png": "seat.png") : "noseat.png"}}' bindtap="clickseat" data-row="{{rowindex}}" data-col="{{colindex}}">{{}}</image>
+        </view>
 
+      </block>
+    </view>
+  </view>
+  <view>
+    <!-- <text wx:if="selectseat[0]==0 && selectseat[1]==0">未选择座位</text>
+    <text wx:else>你已选择 {{selectseat[0]}} 行 {{selectseat[1]}} 列}}</text> -->
+    <text>{{selectseat[0]==0 && selectseat[1]==0? '未选择座位' :'已选择'+selectseat[0]+'行'+selectseat[1]+'列'}}</text>
+  </view>
+  <button bindtap="submit">提交</button>
+</view>
 <!-- 座位 -->
 <!-- <view class='view-all'>
   <view class='view-price-column'>

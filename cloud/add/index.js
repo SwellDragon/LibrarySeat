@@ -5,9 +5,10 @@ cloud.init()
 
 // 云函数入口函数
 exports.main = async (event, context) => {
-  const wxContext = cloud.getWXContext()
+  let time = event.time
+   time = JSON.parse(time)
 
   return {
-    sum: event.a + event.b
+    time: time
   }
 }

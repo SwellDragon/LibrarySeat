@@ -19,9 +19,9 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    const countResult = seatdb.count()
-    const total =  countResult.total
-    console.log(total)
+    // const countResult = seatdb.count()
+    // const total =  countResult.total
+    // console.log(total)
 
 
     // let starttime = "6:00"
@@ -35,6 +35,18 @@ Page({
     // console.log(j);
 
     // let day = new Date()
+    // let dateString = JSON.stringify(day)
+    // console.log("json转换后",dateString)
+    // day = new Date(JSON.parse(dateString))
+    // console.log("转换回来后",day)
+
+    // let day1 = new Date(1587308400000)
+    // let day2 = new Date(1587308400000)
+    // console.log(day1<=day2)
+
+    let s = new Date("2020-04-20T15:00:00.000Z")
+    console.log(new Date(s))
+    
     // console.log("新建时间",day);
     // day = Date.parse(new Date());
     // console.log("解析时间获得时间戳",day);

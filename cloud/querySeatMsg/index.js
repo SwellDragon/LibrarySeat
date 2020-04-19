@@ -19,6 +19,11 @@ async function queryseat(querydata) {
   }).count()
   console.log(countResult)
   const total = countResult.total
+  if(total==0){
+    return{
+      nohavedata:false
+    } 
+  }
   // 计算需分几次取
   const batchTimes = Math.ceil(total / 100)
   // 承载所有读操作的 promise 的数组
@@ -34,6 +39,8 @@ async function queryseat(querydata) {
   //等待所有
   return (await Promise.all(tasks)).reduce((acc, cur) => {
     return {
+      
+      nohavedata:false,
       data: acc.data.concat(cur.data),
       errMsg: acc.errMsg,
     }
@@ -76,11 +83,12 @@ function getdate(querydata) {
 
 // 云函数入口函数
 exports.main = async(event, context) => {
+  console.log(event)
   let querydata = event.querydata
   console.log("申请占座数据", querydata)
   //查询数据库，这间房间已经占用的相关信息
   let seatmsg = await queryseat(querydata)
-  seatmsg = seatmsg.data
+  
   console.log("当前座位占用信息，seatmsg", seatmsg)
   //查询当前房间行列
   let roommsg = await queryroom(querydata)
@@ -95,25 +103,45 @@ exports.main = async(event, context) => {
     }
   }
   console.log("room", room)
+  if(seatmsg.nohavedata){
+    return {
+      is_ok: true,
+      msg: "查询成功,空房间",
+      room: room
+    }
+  }
+  seatmsg = seatmsg.data
+
   //获取起始时间与结束时间
   let date = getdate(querydata)
   console.log("date", date, new Date())
   //处理信息
   for (var i = 0; i < seatmsg.length; i++) {
     //待预约起始时间或结束时间在已预约起始时间和结束时间中间的座位不可用 或待预约开始时间比已预约开始时间早且其带预约结束时间比已预约结束时间晚不可用，其余可用
-    // console.log(seatmsg[i])
-    // console.log("尝试", date.startdate, seatmsg[i].end_time, date.startdate < seatmsg[i].end_time)
-    if (date.startdate > seatmsg[i].start_time && date.startdate < seatmsg[i].end_time ||
-      date.enddate > seatmsg[i].start_time && date.enddate < seatmsg[i].end_time ||
-      date.startdate < seatmsg[i].start_time && date.enddate > seatmsg[i].end_time
+    console.log(seatmsg[i])
+    console.log("尝试", date.startdate, seatmsg[i].end_time, date.startdate < seatmsg[i].end_time)
+    if (date.startdate >= seatmsg[i].start_time && date.startdate <= seatmsg[i].end_time ||
+      date.enddate >= seatmsg[i].start_time && date.enddate <= seatmsg[i].end_time ||
+      date.startdate <= seatmsg[i].start_time && date.enddate >= seatmsg[i].end_time
     ) {
       //标定不可用
+      if(seatmsg[i].stuid==event.stuid){
+        console.log("学号相同")
+        return{
+          is_ok: false,
+          msg: "这段时间内已占有座位",
+        }
+      }
       console.log("不可用")
       room[seatmsg[i].row - 1][seatmsg[i].col - 1] = 0
     }
   }
   //返回信息
-  return room
+  return {
+   is_ok:true,
+   msg:"查询成功",
+   room: room
+  }
   // return {
   //   event,
   //   context,

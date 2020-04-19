@@ -18,7 +18,7 @@ let show_canceldata = []
 
 function analysis(studata, _this) {
   console.log("调用analysis")
-  console.log("准备开始解析每条数据", studata.length, studata)
+  // console.log("准备开始解析每条数据", studata.length, studata)
   for (let i = 0; i < studata.length; i++) { //解析具体数据
     console.log("开始解析每条数据", studata)
     //解析签到数据
@@ -42,14 +42,14 @@ function analysis(studata, _this) {
       is_latedata[i] = false
     }
     //解析空闲数据
-    console.log("解析空闲数据")
+    // console.log("解析空闲数据")
     if (studata[i].is_free == true) {
       is_freedata[i] = true
     } else {
       is_freedata[i] = false
     }
     //解析取消数据
-    console.log("解析取消数据")
+    // console.log("解析取消数据")
     if (studata[i].is_cancel == true) {
       is_canceldata[i] = true
       show_canceldata[i] = false
@@ -58,6 +58,8 @@ function analysis(studata, _this) {
       show_canceldata[i] = true
     }
     //修改每个时间数据
+    studata[i].start_time = new Date(studata[i].start_time)
+    studata[i].end_time = new Date(studata[i].end_time)
     studata[i].start_time = util.formatTime(studata[i].start_time)
     studata[i].end_time = util.formatTime(studata[i].end_time)
   }
@@ -83,7 +85,8 @@ Page({
     can_sign: [],
     show_cancel: [],
     stuid: null,
-    name: null
+    name: null,
+    is_first:true
   },
   //事件处理函数
   sign(e) { //签到
@@ -263,11 +266,14 @@ Page({
                   console.log("失败！！！！将座位信息表违约、完成字段标为真", err)
                 }
               })
-              if (i == res.data.length - 1) {
-                analysis(studata, _this)
-              }
+              // if (i == res.data.length - 1) {
+              //   analysis(studata, _this)
+              // }
 
             } else { //若还在时间内，将座位信息表违约字段标为真,并显示
+              mdata[i].is_late = true
+              studata.push(mdata[i])
+              console.log("修改失约后 仍加入信息", studata)
               seatdb.doc(mdata[i]._id).update({
                 data: {
                   is_late: true,
@@ -279,16 +285,15 @@ Page({
                   console.log("失败！！！！将座位信息表违约字段标为真", err)
                 }
               })
-              mdata[i].is_late = true
-              studata.push(mdata[i])
-              console.log("修改失约后 仍加入信息", studata)
-              if (i == res.data.length - 1) {
-                analysis(studata, _this)
-              }
+
+              // if (i == res.data.length - 1) {
+              //   analysis(studata, _this)
+              // }
             }
           })
         } else { //若未违约
           if (nowtime > mdata[i].end_time) { //若已经结束了这个占座，将座位信息表完成字段标为真
+
             seatdb.doc(mdata[i]._id).update({
               data: {
                 is_complete: true
@@ -300,18 +305,37 @@ Page({
                 console.log("失败！！！！将座位信息表完成字段标为真", err)
               }
             })
-            if (i == res.data.length - 1) {
-              analysis(studata, _this)
-            }
+            // if (i == res.data.length - 1) {
+            //   analysis(studata, _this)
+            // }
           } else { //情况正常，显示
             studata.push(mdata[i]);
-            if (i == res.data.length - 1) {
-              analysis(studata, _this)
-            }
+            // if (i == res.data.length - 1) {
+            //   analysis(studata, _this)
+            // }
           }
         }
+        if (i == res.data.length - 1 || res.data.length==0) {
+          app.globalData.stuseatmsg = studata
+          return studata
+        }
       }
-      console.log("准备解析数据")
-    }).then(() => {})
+      
+    }).then((res) => {
+      console.log("预处理数据结束",res)
+      analysis(studata, _this)
+      _this.setData({
+        is_first:false
+      })
+    })
+  },
+  onShow:function(){
+    if(!this.data.is_first){
+      let _this = this
+      studata = app.globalData.stuseatmsg
+      console.log("再次进入分析得studata",studata)
+      analysis(studata, _this)
+    }
+    
   }
 })

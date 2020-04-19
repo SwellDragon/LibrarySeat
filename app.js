@@ -40,6 +40,7 @@ App({
     userInfo: null,
     userOpenId:null,
     stuid:null,
-    name:null
+    name:null,
+    stuseatmsg:null
   }
 })

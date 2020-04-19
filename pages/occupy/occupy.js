@@ -2,20 +2,20 @@
 // const {
 //   $Message
 // } = require('../../dist/base/index');
-
-function checktime(querydata){
+const app = getApp()
+function checktime(querydata) {
   let starttime = querydata.starttime.split(':')
   starttime[0] = parseInt(starttime[0])
   starttime[1] = parseInt(starttime[1])
   let endtime = querydata.endtime.split(':')
   endtime[0] = parseInt(endtime[0])
   endtime[1] = parseInt(endtime[1])
-  console.log("获得时间",starttime,endtime)
-  if (starttime[0] > endtime[0] ) {//结束时间比开始时间早
-  console.log("结束小时比开始小时早")
+  console.log("获得时间", starttime, endtime)
+  if (starttime[0] > endtime[0]) { //结束时间比开始时间早
+    console.log("结束小时比开始小时早")
     return false
   }
-  if (starttime[0] == endtime[0] && starttime[1] >= endtime[1]  ){
+  if (starttime[0] == endtime[0] && starttime[1] >= endtime[1]) {
     return false
   }
   //预约时间比当前时间早
@@ -26,13 +26,37 @@ function checktime(querydata){
     if (hour < starttime[0]) { //预约小时比当前时间早
       return false
     }
-    if (hour == starttime[0] && min>=starttime[1]) {//小时相同,预约分钟比当前分钟小
+    if (hour == starttime[0] && min >= starttime[1]) { //小时相同,预约分钟比当前分钟小
       return false
     }
   }
   return true
 }
 
+function getdate(querydata) {
+  let starttime = querydata.starttime.split(':')
+  starttime[0] = parseInt(starttime[0])
+  starttime[1] = parseInt(starttime[1])
+  let endtime = querydata.endtime.split(':')
+  endtime[0] = parseInt(endtime[0])
+  endtime[1] = parseInt(endtime[1])
+  let startdate = new Date()
+  let enddate = new Date
+  startdate.setHours(starttime[0])
+  startdate.setMinutes(starttime[1])
+  startdate.setSeconds(0)
+  enddate.setHours(endtime[0])
+  enddate.setMinutes(endtime[1])
+  enddate.setSeconds(0)
+  if (querydata.day == '明日') {
+    startdate = new Date(Date.parse(startdate) + 24 * 60 * 60 * 1000)
+    enddate = new Date(Date.parse(enddate) + 24 * 60 * 60 * 1000)
+  }
+  return {
+    startdate: startdate,
+    enddate: enddate
+  }
+}
 
 Page({
 
@@ -48,7 +72,12 @@ Page({
     ],
     multiIndex: [0, 0, 0, 0],
     starttime: '6:00',
-    endtime: '23:00'
+    endtime: '23:00',
+    row : [],
+    col : [],
+    selectseat:[0,0],
+    isquery:false,
+    querydata:null
   },
 
   //事件处理函数
@@ -133,6 +162,7 @@ Page({
       endtime: e.detail.value
     })
   },
+  //查询
   query(e) {
     console.log('form发生了submit事件，携带数据为：', e.detail.value, this.data.multiArray[0][this.data.multiIndex[0]], this.data.multiArray[1][this.data.multiIndex[1]], this.data.multiArray[2][this.data.multiIndex[2]], this.data.multiArray[3][this.data.multiIndex[3]])
     let querydata = {}
@@ -142,21 +172,53 @@ Page({
     querydata.day = this.data.multiArray[3][this.data.multiIndex[3]]
     querydata.starttime = e.detail.value.starttime
     querydata.endtime = e.detail.value.endtime
-    console.log("上传的数据",querydata)
+    console.log("上传的数据", querydata)
     //校验时间合法性
-    if(checktime(querydata)){
+    if (checktime(querydata)) {
       console.log("时间合法")
+      let stuid = app.globalData.stuid
       wx.cloud.callFunction({
         name: "querySeatMsg",
         data: {
+          stuid: stuid,
           querydata: querydata
-        },
-        success(res) {
-          console.log(res)
         }
+      }).then((res) => {
+        
+        console.log("座位可用数据", res)
+        if (res.result.is_ok) { //能在这个时间段占座位
+          
+          let rowarry = [[0]]
+          for (var i = 0; i < res.result.room.length; i++) { //行
+            rowarry[i + 1] = i + 1
+          }
+          let colarry = [[0]]
+          for (var i = 0; i < res.result.room[0].length; i++) { //行
+            colarry[i + 1] = i + 1
+          }
+          this.setData({
+            seatmsg: res.result.room,
+            row: rowarry,
+            col: colarry,
+            isquery: true,
+            querydata: querydata
+          })}else{
+          wx.showModal({
+            title: '提示',
+            content: res.result.msg,
+            showCancel: false,
+            success(res) {
+              if (res.confirm) {
+                console.log('用户点击确定')
+              } else if (res.cancel) {
+                console.log('用户点击取消')
+              }
+            }
+          })
+          }
+        
       })
-    }
-    else{
+    } else {
       wx.showModal({
         title: '提示',
         content: '时间不合法，请检查',
@@ -170,11 +232,93 @@ Page({
         }
       })
     }
-
-    
-
   },
-
+  clickseat(e){
+    console.log("点击座位",e)
+    let col = e.target.dataset.col
+    let row = e.target.dataset.row
+    if(this.data.selectseat[0]==0 && this.data.selectseat[1]==0){//当前未选择座位
+      this.setData({
+        selectseat:[row,col]
+      })
+    }
+    else{ //已选择座位
+      if (this.data.selectseat[0] == row && this.data.selectseat[1] == col){ //如果被选中座位再次被点 取消
+        this.setData({
+          selectseat:[0,0]
+        })
+      }
+      else{
+        wx.showToast({
+          title: '你已选择其他座位',
+          icon: 'none',
+          duration: 1000,
+          // mask: true
+        })
+      }
+    }
+  },
+  submit(e){
+    if (this.data.selectseat[0] == 0 && this.data.selectseat[1] == 0) {//当前未选择座位
+      wx.showToast({
+        title: '你未选择座位',
+        icon: 'none',
+        duration: 1000,
+        // mask: true
+      })
+    }else{
+      let submitdata = JSON.parse(JSON.stringify(this.data.querydata))//深度克隆
+      let time = getdate(this.data.querydata)
+      // console.log("submit", querydata)
+      submitdata.starttime = Date.parse(time.startdate)
+      submitdata.endtime = Date.parse(time.enddate)
+      submitdata.row = this.data.selectseat[0]
+      submitdata.col = this.data.selectseat[1]
+      submitdata.stuid = app.globalData.stuid
+      submitdata._openid = app.globalData.userOpenId
+      console.log("submit", submitdata)
+      wx.cloud.callFunction({
+        name: "submitSeatMsg",
+        data: {
+          submitdata: submitdata
+        }
+      }).then((res) => {
+        console.log("调用submitseatmsg", res)
+        if(res.result.is_ok){
+          wx.showModal({
+            title: '提示',
+            content: '占座成功',
+            showCancel: false,
+            success(res) {
+              if (res.confirm) {
+                console.log('用户点击确定')
+              } else if (res.cancel) {
+                console.log('用户点击取消')
+              }
+            }
+          })
+          res.result.msg.start_time = new Date(res.result.msg.start_time)
+          res.result.msg.end_time = new Date(res.result.msg.end_time)
+          app.globalData.stuseatmsg.push(res.result.msg)
+          
+        }else{
+          wx.showModal({
+            title: '提示',
+            content: '占座失败',
+            showCancel: false,
+            success(res) {
+              if (res.confirm) {
+                console.log('用户点击确定')
+              } else if (res.cancel) {
+                console.log('用户点击取消')
+              }
+            }
+          })
+        }
+      })
+    }
+    
+  },
   /**
    * 生命周期函数--监听页面加载
    */
