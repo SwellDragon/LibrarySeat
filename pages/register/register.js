@@ -26,6 +26,7 @@ Page({
           //console.log( res)
           if (res.data.length != 0 && res.data[0].name == event.detail.value.username) {
             console.log("已匹配", res)
+            console.log(event.detail)
             //查询是否已被注册
             userdb.where({
               student_id: event.detail.value.stuid
@@ -47,6 +48,7 @@ Page({
                       user_name: event.detail.value.username,
                       student_id: event.detail.value.stuid,
                       user_id: app.globalData.userOpenId,
+                      team_id:""
                       //user_id: 123,
                     },
                     // success(res){

@@ -36,6 +36,8 @@ Page({
               if (res.data.length != 0) {
                 app.globalData.name = res.data[0].user_name
                 app.globalData.stuid = res.data[0].student_id
+                //获取好友信息，获取组队信息
+                
                 wx.switchTab({
                   url: '../index/index',
                 })

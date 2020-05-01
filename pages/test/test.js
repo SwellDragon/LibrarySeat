@@ -4,6 +4,7 @@ const db = wx.cloud.database()
 const _ = db.command
 const seatdb = db.collection('SeatMsg')
 const latedb = db.collection('LateMsg')
+const app = getApp()
 
 // const _ = db.command
 Page({
@@ -19,6 +20,19 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+
+
+    wx.getUserInfo({
+      success: res => {
+        // 可以将 res 发送给后台解码出 unionId
+        app.globalData.userInfo = res.userInfo
+        console.log(res)
+
+        // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
+        // 所以此处加入 callback 以防止这种情况
+       
+      }
+    })
     // const countResult = seatdb.count()
     // const total =  countResult.total
     // console.log(total)
@@ -44,8 +58,8 @@ Page({
     // let day2 = new Date(1587308400000)
     // console.log(day1<=day2)
 
-    let s = new Date("2020-04-20T15:00:00.000Z")
-    console.log(new Date(s))
+    // let s = new Date("2020-04-20T15:00:00.000Z")
+    // console.log(new Date(s))
     
     // console.log("新建时间",day);
     // day = Date.parse(new Date());

@@ -37,10 +37,13 @@ App({
     })
   },
   globalData: {
-    userInfo: null,
+    userInfo: null, 
     userOpenId:null,
-    stuid:null,
-    name:null,
-    stuseatmsg:null
+    stuid:null, //学号
+    name:null,  //姓名
+    stuseatmsg:null, //当前占用座位信息
+    team_id:null, //所属队伍id
+    friendmsg:null,
+    teammsg:null
   }
 })
