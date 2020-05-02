@@ -29,6 +29,7 @@
         class="avatar"
         src="{{item.avatar}}"
         mode="scaleToFill"
+        bindtap=""
       ></image> 
       <view class="main">
       <!--
@@ -86,7 +87,7 @@
 
     </view>
 
-    <view class="message-sender" wx:if="{{!userInfo}}">
+    <view class="message-sender" wx:else>
       <button 
         open-type="getUserInfo" 
         bindgetuserinfo="onGetUserInfo"

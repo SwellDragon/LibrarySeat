@@ -6,7 +6,7 @@ const SETDATA_SCROLL_TO_BOTTOM = {
   scrollWithAnimation: true,
 }
 const recorderManager = wx.getRecorderManager()
-const app = 
+const app = getApp()
 Component({
   properties: {
     envId: String,
@@ -179,7 +179,9 @@ Component({
           _id: `${Math.random()}_${Date.now()}`,
           groupId: this.data.groupId,
           avatar: this.data.userInfo.avatarUrl,
-          nickName: this.data.userInfo.nickName,
+          // nickName: this.data.userInfo.nickName,
+          stuid: app.globalData.stuid,
+          nickName: app.globalData.name,
           msgType: 'text',
           textContent: e.detail.value,
           sendTime: util.formatTime(new Date()),
@@ -255,7 +257,8 @@ Component({
             _id: `${Math.random()}_${Date.now()}`,
             groupId: this.data.groupId,
             avatar: this.data.userInfo.avatarUrl,
-            nickName: this.data.userInfo.nickName,
+            stuid: app.globalData.stuid,
+            nickName: app.globalData.name,
             msgType: 'record',
             sendTime: util.formatTime(new Date()),
             sendTimeTS: Date.now(), // fallback
@@ -275,7 +278,7 @@ Component({
           this.scrollToBottom(true)
 
           const uploadTask = wx.cloud.uploadFile({
-            cloudPath: `录音/${this.data.groupId}/${this.data.userInfo.nickName}/${Math.random()}_${Date.now()}.${this.data.tempFilePathrecord.match(/\.(\w+)$/)[1]}`,
+            cloudPath: `录音/${this.data.groupId}/${app.globalData.name}/${Math.random()}_${Date.now()}.${this.data.tempFilePathrecord.match(/\.(\w+)$/)[1]}`,
            // cloudPath: 'record.mp3',
             filePath: this.data.tempFilePathrecord,
             config: {
@@ -385,7 +388,8 @@ Component({
               _id: `${Math.random()}_${Date.now()}`,
               groupId: this.data.groupId,
               avatar: this.data.userInfo.avatarUrl,
-              nickName: this.data.userInfo.nickName,
+              stuid: app.globalData.stuid,
+              nickName: app.globalData.name,
               msgType: 'file',
               sendTime: util.formatTime(new Date()),
               sendTimeTS: Date.now(), // fallback
@@ -407,7 +411,7 @@ Component({
             console.log('文件的信息:',res.tempFiles[0].path)
             console.log('文件的名字:',res.tempFiles[0].name)
             const uploadTask = wx.cloud.uploadFile({
-              cloudPath: `文件传输/${this.data.groupId}/${this.data.userInfo.nickName}/${Math.random()}_${Date.now()}.${res.tempFiles[0].path.match(/\.(\w+)$/)[1]}`,
+              cloudPath: `文件传输/${this.data.groupId}/${app.globalData.name}/${Math.random()}_${Date.now()}.${res.tempFiles[0].path.match(/\.(\w+)$/)[1]}`,
               filePath: res.tempFiles[0].path,
               config: {
                 env: envId,
@@ -504,7 +508,8 @@ Component({
             _id: `${Math.random()}_${Date.now()}`,
             groupId: this.data.groupId,
             avatar: this.data.userInfo.avatarUrl,
-            nickName: this.data.userInfo.nickName,
+            stuid: app.globalData.stuid,
+            nickName: app.globalData.name,
             msgType: 'image',
             sendTime: util.formatTime(new Date()),
             sendTimeTS: Date.now(), // fallback
@@ -524,7 +529,7 @@ Component({
           this.scrollToBottom(true)
 
           const uploadTask = wx.cloud.uploadFile({
-            cloudPath: `办公交流/${this.data.groupId}/${this.data.userInfo.nickName}/${Math.random()}_${Date.now()}.${res.tempFilePaths[0].match(/\.(\w+)$/)[1]}`,
+            cloudPath: `办公交流/${this.data.groupId}/${app.globalData.name}/${Math.random()}_${Date.now()}.${res.tempFilePaths[0].match(/\.(\w+)$/)[1]}`,
             filePath: res.tempFilePaths[0],
             config: {
               env: envId,
@@ -561,6 +566,7 @@ Component({
     },
 
     onMessageImageTap(e) {
+      console.log("点击头像",e)
       wx.previewImage({
         urls: [e.target.dataset.fileid],
       })

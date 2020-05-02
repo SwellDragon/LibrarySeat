@@ -12,6 +12,7 @@
 		"minified": true,
 		"newFeature": true,
 		"coverView": true,
+		"nodeModules": false,
 		"autoAudits": false,
 		"showShadowRootInWxmlPanel": true,
 		"scopeDataCheck": false,
@@ -25,7 +26,7 @@
 		}
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.10.4",
+	"libVersion": "2.11.0",
 	"appid": "wx4fad4058b027d097",
 	"projectname": "demo",
 	"debugOptions": {
