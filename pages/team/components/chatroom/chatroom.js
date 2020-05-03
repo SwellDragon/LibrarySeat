@@ -590,6 +590,7 @@ Component({
     },
 
     async onScrollToUpper() {
+      console.log("onScrollToUpper")
       if (this.db && this.data.chats.length) {
         const { collection } = this.properties
         const _ = this.db.command
@@ -599,8 +600,8 @@ Component({
         this.data.chats.unshift(...data.reverse())
         this.setData({
           chats: this.data.chats,
-          scrollToMessage: `item-${data.length}`,
-          scrollWithAnimation: false,
+          // scrollToMessage: `item-${data.length}`,
+          // scrollWithAnimation: true,
         })
       }
     },
