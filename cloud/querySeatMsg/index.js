@@ -104,46 +104,57 @@ exports.main = async(event, context) => {
       room[i][j] = 1
     }
   }
-  console.log("room", room)
-  if(seatmsg.nohavedata){
+  // console.log("room", room)
+  if(seatmsg.nohavedata){//若为空房间
     return {
       is_ok: true,
       msg: "查询成功,空房间",
       room: room
     }
-  }
-  seatmsg = seatmsg.data
-
-  //获取起始时间与结束时间
-  let date = getdate(querydata)
-  console.log("date", date, new Date())
-  //处理信息
-  for (var i = 0; i < seatmsg.length; i++) {
-    //待预约起始时间或结束时间在已预约起始时间和结束时间中间的座位不可用 或待预约开始时间比已预约开始时间早且其带预约结束时间比已预约结束时间晚不可用，其余可用
-    console.log(seatmsg[i])
-    console.log("尝试", date.startdate, seatmsg[i].end_time, date.startdate < seatmsg[i].end_time)
-    if (date.startdate >= seatmsg[i].start_time && date.startdate <= seatmsg[i].end_time ||
-      date.enddate >= seatmsg[i].start_time && date.enddate <= seatmsg[i].end_time ||
-      date.startdate <= seatmsg[i].start_time && date.enddate >= seatmsg[i].end_time
-    ) {
-      //标定不可用
-      if(seatmsg[i].stuid==event.stuid){
-        console.log("学号相同")
-        return{
-          is_ok: false,
-          msg: "这段时间内已占有座位",
+  }else{//不是空房间
+    seatmsg = seatmsg.data
+    //获取起始时间与结束时间
+    let date = getdate(querydata)
+    console.log("date", date, new Date())
+    //处理信息
+    // let count = 0
+    for (let i = 0; i < seatmsg.length; i++) {
+      
+      //待预约起始时间或结束时间在已预约起始时间和结束时间中间的座位不可用 或待预约开始时间比已预约开始时间早且其带预约结束时间比已预约结束时间晚不可用，其余可用
+      console.log(seatmsg[i])
+      console.log("尝试", date.startdate, seatmsg[i].end_time, date.startdate < seatmsg[i].end_time)
+      if (date.startdate >= seatmsg[i].start_time && date.startdate <= seatmsg[i].end_time ||
+        date.enddate >= seatmsg[i].start_time && date.enddate <= seatmsg[i].end_time ||
+        date.startdate <= seatmsg[i].start_time && date.enddate >= seatmsg[i].end_time
+      ) {
+        // count++
+        //标定不可用
+        if (seatmsg[i].stuid == event.stuid) {
+          console.log("学号相同")
+          return {
+            is_ok: false,
+            msg: "这段时间内已占有座位",
+          }
         }
+        console.log(seatmsg[i].row + "行" + seatmsg[i].col + "列该座位不可用")
+        room[seatmsg[i].row - 1][seatmsg[i].col - 1] = 0
       }
-      console.log(seatmsg[i].row + "行" + seatmsg[i].col +"列该座位不可用")
-      room[seatmsg[i].row - 1][seatmsg[i].col - 1] = 0
+      
     }
+    
+      return {
+        is_ok: true,
+        msg: seatmsg.length + "1查询成功,不是空房间",
+        // count:count,
+        // date: date,
+        // seatmsg:seatmsg,
+        room: room
+      }
+    
   }
+  
   //返回信息
-  return {
-   is_ok:true,
-   msg:"查询成功,不是空房间",
-   room: room
-  }
+  
   // return {
   //   event,
   //   context,
