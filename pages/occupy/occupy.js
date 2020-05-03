@@ -16,14 +16,18 @@ function checktime(querydata) {
     return false
   }
   if (starttime[0] == endtime[0] && starttime[1] >= endtime[1]) {
+    console.log("结束小时相同 结束分钟比开始分钟早")
     return false
   }
   //预约时间比当前时间早
   if (querydata.day == '今日') {
     //当前时间
-    let hour = new Date().getHours
-    let min = new Date().getMinutes
-    if (hour < starttime[0]) { //预约小时比当前时间早
+    console.log("今天")
+    let time = new Date()
+    let hour = time.getHours()
+    let min = time.getMinutes()
+    console.log(hour, min)
+    if (hour > starttime[0]) { //预约小时比当前时间早
       return false
     }
     if (hour == starttime[0] && min >= starttime[1]) { //小时相同,预约分钟比当前分钟小
@@ -215,6 +219,9 @@ Page({
               }
             }
           })
+          this.setData({
+            isquery: false
+          })
           }
         
       })
@@ -231,7 +238,11 @@ Page({
           }
         }
       })
+      this.setData({
+        isquery:false
+      })
     }
+
   },
   clickseat(e){
     console.log("点击座位",e)

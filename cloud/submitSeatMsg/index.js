@@ -15,6 +15,7 @@ exports.main = async(event, context) => {
   console.log("submitdata", submitdata)
   let day = new Date()
   let _id =null
+  //第一次添加数据
   await seatdb.add({
     data: {
       _openid: submitdata._openid,
@@ -52,7 +53,7 @@ exports.main = async(event, context) => {
     }).get()
   }).then((res) => {
 
-    console.log("冲突查询", res)
+    console.log("冲突查询结果", res)
     let seatmsg = res.data
     let date = submitdata
 

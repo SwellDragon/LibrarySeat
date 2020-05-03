@@ -53,6 +53,7 @@ function analysis(studata, _this) {
     if (studata[i].is_cancel == true) {
       is_canceldata[i] = true
       show_canceldata[i] = false
+      can_signdata[i] = false
     } else {
       is_canceldata[i] = false
       show_canceldata[i] = true
@@ -208,7 +209,7 @@ Page({
     seatdb.where({
       stuid: _this.data.stuid,
       is_complete: false
-    }).get().then((res) => {
+    }).get().then( async (res) => {
       //遍历所有数据
       console.log("获取当前学生占座数据成功", res)
       var mdata = res.data;
@@ -217,7 +218,7 @@ Page({
         //查询是否违约
         if (!mdata[i].is_sign && !mdata[i].is_late && !mdata[i].is_cancel && nowtime > mdata[i].start_time) { //若超过时间未签到且尚未标记违约，则违约
           console.log("违约!!!记录入违约表", _this.data.stuid);
-          latedb.where({
+          await latedb.where({
             stuid: _this.data.stuid
           }).get().then((res) => {
             // console.log(i);
@@ -260,7 +261,7 @@ Page({
                   is_complete: true
                 },
                 success(res) {
-                  console.log("将座位信息表违约、完成字段标为真", res)
+                  console.log("已结束占座，将座位信息表违约、完成字段标为真", res)
                 },
                 fail(err) {
                   console.log("失败！！！！将座位信息表违约、完成字段标为真", err)
@@ -316,6 +317,7 @@ Page({
           }
         }
         if (i == res.data.length - 1 || res.data.length==0) {
+          console.log("预处理条目",res.data.length,studata)
           app.globalData.stuseatmsg = studata
           return studata
         }
@@ -330,6 +332,7 @@ Page({
     })
   },
   onShow:function(){
+    console.log("是否第一次进入", this.data.is_first)
     if(!this.data.is_first){
       let _this = this
       studata = app.globalData.stuseatmsg

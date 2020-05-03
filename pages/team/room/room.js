@@ -44,8 +44,8 @@ Page({
 
     this.setData({
       onGetUserInfo: this.onGetUserInfo,
-      // getOpenID: app.globalData.userOpenId,
-      getOpenID:"oggWR4oHu9nQDznc899i3eWttX0s",
+      getOpenID: app.globalData.userOpenId,
+      // getOpenID:"oggWR4oHu9nQDznc899i3eWttX0s",
 
     })
 

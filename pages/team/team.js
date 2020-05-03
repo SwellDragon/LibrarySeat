@@ -42,22 +42,6 @@ Page({
         addpeopledetail: res.data
       })
     })
-
-    // wx.cloud.callFunction({
-    //   name: 'yunrouter',
-    //   data: {
-    //     $url: "searchpeople", //云函数路由参数
-    //     phone: e,
-    //   },
-    //   success: res => {
-    //     console.log(res)
-    //     this.setData({
-    //       addpeopledetail: res.result.data[0]
-    //     })
-    //   },
-    //   fail() {
-    //   }
-    // });
   },
   tostupage:function(e){
     console.log("搜索栏点击好友",e)
@@ -80,55 +64,7 @@ Page({
       open: !this.data.open
     });
   },
-  // addpeople(e) {
-  //   let that = this
-  //   //先判断是否有该好友，本地判断也好，数据库判断都行
-  //   var chatid1 = that.data.addpeopledetail._openid + app.globalData.openid
-  //   var chatid2 = app.globalData.openid + that.data.addpeopledetail._openid
-  //   for (var i = 0; i < app.globalData.friends.length; i++) {
-  //     var fid = app.globalData.friends[i].id;
-  //     if (fid === chatid1 || fid === chatid2) {
-  //       that.setData({
-  //         chachong: 1
-  //       })
-  //     }
-  //   }
-  //   if (that.data.chachong === 0) {//如果没有添加该好友
-  //     wx.requestSubscribeMessage({
-  //       tmplIds: [TmplId],
-  //       success(res) {
-  //         if (res.errMsg === 'requestSubscribeMessage:ok') {
-  //           wx.cloud.callFunction({
-  //             name: 'yunrouter',
-  //             data: {
-  //               $url: "addpeople", //云函数路由参数
-  //               addpeopleid: that.data.addpeopledetail._openid,//应该应答请求的那个人
-  //               askpeopleid: app.globalData.openid,//我自己，发出请求的人
-  //               peopleask: app.globalData.userInfo,
-  //               peopleadd: that.data.addpeopledetail.userInfo,
-  //               chatid: that.data.addpeopledetail._openid + app.globalData.openid
-  //             },
-  //             success: res => {
-  //               console.log('请求成功')
-  //             },
-  //             fail() {
-  //             }
-  //           });
-  //         }
-  //       },
-  //       fail(re) {
-  //         console.log(re)
-  //       }
-  //     })
-  //   }
-  //   else {
-  //     wx.showModal({
-  //       title: '温馨提示',
-  //       content: '您已添加成功该好友，无须重复添加'
-  //     })
-  //   }
-  // },
-  
+
   onLoad() {
     this.getheight()
     this.setData({
@@ -136,6 +72,7 @@ Page({
       stuid: app.globalData.stuid
     })
   },
+
   onShow: function (options) {
     //重新更新好友列表
     this.checkfriend()
@@ -149,11 +86,12 @@ Page({
     }
     
   },
+
 checkfriend(){//获取好友列表
   console.log(this.data.stuid)
     frienddb.where({
-      // my_stuid: app.globalData.stuid
-      my_stuid: '2016210019'
+      my_stuid: app.globalData.stuid
+      // my_stuid: '2016210019'
     }).get().then((res)=>{
       console.log("好友列表",res)
       this.setData({
@@ -175,51 +113,13 @@ checkfriend(){//获取好友列表
       })
       
     })
-    // wx.cloud.callFunction({
-    //   name: 'yunrouter',
-    //   data: {
-    //     $url: "checkpeopleadd", //云函数路由参数
-    //     id: app.globalData.openid,  //看我当签有没有好友请求添加我
-    //     status: 0
-    //   },
-    //   success: res => {
-    //     console.log(res)
-    //     this.setData({
-    //       //这里如果加data[0]，那么页面渲染的时候就是他的记录条数了
-    //       peoplecheck: res.result.data//这个是在接收好友请求哪一方，将信息显示出来的要给消息
-    //       //就是可以看到谁请求你
-    //     })
-    //   },
-    //   fail() {
-    //   }
-    // });
-
-    /*
-    先不管是否被拒绝，这个拒绝逻辑还没有想好
-    //检查是否被拒绝的
-        wx.cloud.callFunction({
-          name: 'yunrouter',
-          data: {
-            $url: "checkpeopleadd", //云函数路由参数
-            id: app.globalData.openid,
-            status:2//拒绝的
-          },
-          success: res => {
-            console.log(res)
-            this.setData({
-              askjujuelist: res.result.data
-            })
-          },
-          fail() {
-          }
-        });
-    */
+    
   },
+  //跳转到聊天界面
   peoplepage(e) {
     console.log(e)
     // let haoyouinfo = JSON.stringify(e.currentTarget.dataset.info)
     let haoyouinfo = e.currentTarget.dataset.info
-
     console.log(haoyouinfo)
     let mystunum = parseInt(haoyouinfo.my_stuid, 10)
     let friendstunum = parseInt(haoyouinfo.friend_stuid, 10)
@@ -236,7 +136,7 @@ checkfriend(){//获取好友列表
       url: '/pages/team/room/room?id=' +roomid + '&name=' + haoyouinfo.friend_name + '&backgroundimage=' + "",
     })
   },
-
+//接受好友请求
   confirmpeopleadd(e) {
     let that = this;
     let _this = this
@@ -255,40 +155,8 @@ checkfriend(){//获取好友列表
         _this.checkfriend()
       },
     })
-    // wx.cloud.callFunction({
-    //   name: 'yunrouter',
-    //   data: {
-    //     $url: "confirmpeopleadd", //云函数路由参数
-    //     peopleconfim: that.data.peopleconfim
-    //   },
-    //   success: res => {
-    //     console.log(res)
-    //     wx.cloud.callFunction({
-    //       name: 'yunrouter',
-    //       data: {
-    //         $url: "HuoquFriends", //云函数路由参数
-    //         openid: app.globalData.openid
-    //       },
-    //       success: res2 => {
-    //         console.log(res2)
-    //         that.setData({
-    //           peoplelist: res2.result.data[0].friends,
-    //         })
-    //         app.globalData.friends = res2.result.data[0].friends
-    //       },
-    //       fail() {
-    //       }
-    //     });
-    //     console.log('添加成功')
-    //     //将刚才添加成功的取消掉
-    //     that.checkpeopleadd();
-    //   },
-    //   fail() {
-    //   }
-    // });
-
   },
-
+//拒绝好友请求
   cancelpeopleadd(e) {
     let that = this;
     let _this = this
@@ -307,18 +175,7 @@ checkfriend(){//获取好友列表
         _this.checkpeopleadd();
       },
     })
-    // wx.cloud.callFunction({
-    //   name: 'yunrouter',
-    //   data: {
-    //     $url: "jujueask", //云函数路由参数
-    //     peopleconfim: that.data.peopleconfim
-    //   },
-    //   success: res => {
-    //     that.checkpeopleadd();
-    //   },
-    //   fail() {
-    //   }
-    // });
+    
   },
 
   //拒绝好友请求相关的云函数

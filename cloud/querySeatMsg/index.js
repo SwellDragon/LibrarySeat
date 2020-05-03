@@ -20,8 +20,9 @@ async function queryseat(querydata) {
   console.log(countResult)
   const total = countResult.total
   if(total==0){
+    console.log("查询已经占用的座位情况，空房间")
     return{
-      nohavedata:false
+      nohavedata:true
     } 
   }
   // 计算需分几次取
@@ -132,14 +133,14 @@ exports.main = async(event, context) => {
           msg: "这段时间内已占有座位",
         }
       }
-      console.log("不可用")
+      console.log(seatmsg[i].row + "行" + seatmsg[i].col +"列该座位不可用")
       room[seatmsg[i].row - 1][seatmsg[i].col - 1] = 0
     }
   }
   //返回信息
   return {
    is_ok:true,
-   msg:"查询成功",
+   msg:"查询成功,不是空房间",
    room: room
   }
   // return {
