@@ -311,7 +311,9 @@ Page({
           res.result.msg.start_time = new Date(res.result.msg.start_time)
           res.result.msg.end_time = new Date(res.result.msg.end_time)
           app.globalData.stuseatmsg.push(res.result.msg)
-          
+          this.setData({
+            isquery: false
+          })
         }else{
           wx.showModal({
             title: '提示',

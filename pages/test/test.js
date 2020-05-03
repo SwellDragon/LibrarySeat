@@ -16,23 +16,43 @@ Page({
     date:null
   },
 
+  mergeCommonCriteria(criteria) {
+    return {
+      //groupId是你这个聊天室的名字，
+      //自己可以利用Id给每个卖家创建一下之类的，用id当名字
+      //同一个卖家的大家都进到这个聊天室中
+
+      //或者商品一开始上传的时候给他带一个属性就是聊太的属性就行，正好也可以当作评论的属性
+      // groupId: this.data.groupId,
+      groupId:"20152101592016210019",
+
+      ...criteria,
+    }
+  },
+  async test(){
+    const { data: initList } = await db.collection('ChatRecord').where({
+      groupId: "20152101592016210019"
+    }).get()
+
+    console.log('init query chats', initList)
+  },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    this.test()
 
+    // wx.getUserInfo({
+    //   success: res => {
+    //     // 可以将 res 发送给后台解码出 unionId
+    //     app.globalData.userInfo = res.userInfo
+    //     console.log(res)
 
-    wx.getUserInfo({
-      success: res => {
-        // 可以将 res 发送给后台解码出 unionId
-        app.globalData.userInfo = res.userInfo
-        console.log(res)
-
-        // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-        // 所以此处加入 callback 以防止这种情况
+    //     // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
+    //     // 所以此处加入 callback 以防止这种情况
        
-      }
-    })
+    //   }
+    // })
     // const countResult = seatdb.count()
     // const total =  countResult.total
     // console.log(total)

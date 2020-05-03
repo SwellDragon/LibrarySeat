@@ -89,7 +89,6 @@ exports.main = async(event, context) => {
   console.log("申请占座数据", querydata)
   //查询数据库，这间房间已经占用的相关信息
   let seatmsg = await queryseat(querydata)
-  
   console.log("当前座位占用信息，seatmsg", seatmsg)
   //查询当前房间行列
   let roommsg = await queryroom(querydata)
