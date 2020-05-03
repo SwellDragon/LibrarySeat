@@ -40,7 +40,19 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.test()
+    // this.test()
+    seatdb.where({
+      stuid: submitdata.stuid,
+      addr: submitdata.addr,
+      floor: submitdata.floor,
+      room: submitdata.room,
+      row: submitdata.row,
+      col: submitdata.col,
+      is_cancel: false,
+      is_complete: false,
+    }).get().then((res)=>{
+      console.log(res)
+    })
 
     // wx.getUserInfo({
     //   success: res => {

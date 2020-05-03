@@ -245,29 +245,41 @@ Page({
 
   },
   clickseat(e){
+    let _this = this
     console.log("点击座位",e)
     let col = e.target.dataset.col
     let row = e.target.dataset.row
-    if(this.data.selectseat[0]==0 && this.data.selectseat[1]==0){//当前未选择座位
-      this.setData({
-        selectseat:[row,col]
+    if(_this.data.seatmsg[row-1][col-1]==1){//当前座位未被占用
+      if (this.data.selectseat[0] == 0 && this.data.selectseat[1] == 0) {//当前未选择座位
+        this.setData({
+          selectseat: [row, col]
+        })
+      }
+      else { //已选择座位
+        if (this.data.selectseat[0] == row && this.data.selectseat[1] == col) { //如果被选中座位再次被点 取消
+          this.setData({
+            selectseat: [0, 0]
+          })
+        }
+        else {
+          wx.showToast({
+            title: '你已选择其他座位',
+            icon: 'none',
+            duration: 1000,
+            // mask: true
+          })
+        }
+      }
+    }else{
+      wx.showToast({
+        title: '当前座位已被占用',
+        icon: 'none',
+        duration: 1000,
+        // mask: true
       })
     }
-    else{ //已选择座位
-      if (this.data.selectseat[0] == row && this.data.selectseat[1] == col){ //如果被选中座位再次被点 取消
-        this.setData({
-          selectseat:[0,0]
-        })
-      }
-      else{
-        wx.showToast({
-          title: '你已选择其他座位',
-          icon: 'none',
-          duration: 1000,
-          // mask: true
-        })
-      }
-    }
+
+    
   },
   submit(e){
     if (this.data.selectseat[0] == 0 && this.data.selectseat[1] == 0) {//当前未选择座位

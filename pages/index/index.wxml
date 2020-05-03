@@ -17,7 +17,7 @@
 <view font-size="25px">预约</view>
 <view wx:for="{{seatmsg}}" wx:key="_id" wx:for-item="item" wx:for-index="index">
   <view>
-    <view>{{item.addr}} {{item.floor}}层{{item.room}} {{item.row}}行 {{item.row}}列 </view>
+    <view>{{item.addr}} {{item.floor}}层{{item.room}} {{item.row}}行 {{item.col}}列 </view>
     <view class="time">{{item.start_time}}-{{item.end_time}}</view>
     <view class="detail">
       <text>{{is_sign[index]?'已签到':'未签到'}} </text>

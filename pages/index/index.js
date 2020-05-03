@@ -18,9 +18,9 @@ let show_canceldata = []
 
 function analysis(studata, _this) {
   console.log("调用analysis")
-  // console.log("准备开始解析每条数据", studata.length, studata)
+  console.log("准备开始解析每条数据", studata.length, studata)
   for (let i = 0; i < studata.length; i++) { //解析具体数据
-    console.log("开始解析每条数据", studata)
+    // console.log("开始解析每条数据", studata)
     //解析签到数据
     if (studata[i].is_sign == true) {
       is_signdata[i] = true
@@ -28,7 +28,7 @@ function analysis(studata, _this) {
     } else {
       is_signdata[i] = false
       //判断是否可以签到
-      console.log(Date.parse(studata[i].start_time), Date.parse(studata[i].start_time) - 15 * 60 * 1000, Date.parse(nowtime))
+      // console.log(Date.parse(studata[i].start_time), Date.parse(studata[i].start_time) - 15 * 60 * 1000, Date.parse(nowtime))
       if (Date.parse(studata[i].start_time) - 15 * 60 * 1000 <= Date.parse(nowtime)) { //开始时间前15分钟后可进行签到
         console.log("可签到")
         can_signdata[i] = true
@@ -183,10 +183,18 @@ Page({
               console.log("取消预约成功", res)
               is_canceldata[e.target.dataset.index] = true
               show_canceldata[e.target.dataset.index] = false
+              can_signdata[e.target.dataset.index]= false
               _this.setData({
                 is_cancel: is_canceldata,
-                show_cancel: show_canceldata
+                show_cancel: show_canceldata,
+                can_sign:can_signdata
               })
+              console.log(e)
+              // console.log(e.currentTarget.dataset.index)
+              console.log("前", studata)
+              studata[e.currentTarget.dataset.index].is_cancel = true
+              app.globalData.stuseatmsg = studata
+              console.log("后", studata)
             },
             fail(err) {
               console.log("失败！！！取消预约", )

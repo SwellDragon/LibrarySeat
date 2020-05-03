@@ -33,7 +33,9 @@ async function queryseat(querydata) {
     const promise = seatdb.where({
       addr: querydata.addr,
       floor: querydata.floor,
-      room: querydata.room
+      room: querydata.room,
+      is_complete: false,
+      is_cancel: false
     }).skip(i * MAX_LIMIT).limit(MAX_LIMIT).get()
     tasks.push(promise)
   }
