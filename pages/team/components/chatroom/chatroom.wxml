@@ -30,7 +30,8 @@
         class="avatar"
         src="{{item.avatar}}"
         mode="scaleToFill"
-        bindtap=""
+        bindtap="onUserAvatarTap"
+        data-detail="{{item}}"
       ></image> 
       <view class="main">
       <!--

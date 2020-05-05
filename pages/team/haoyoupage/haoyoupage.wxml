@@ -34,6 +34,7 @@
     </view> -->
     <view wx:if="{{is_friend}}">
       <button bindtap="chat">点击进行聊天</button>
+      <button type="warn" bindtap="deletefriend">删除好友</button>
     </view>
     <view wx:else>
     <button bindtap="addpeople">添加好友</button>

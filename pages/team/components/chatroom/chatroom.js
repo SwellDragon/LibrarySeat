@@ -7,6 +7,8 @@ const SETDATA_SCROLL_TO_BOTTOM = {
 }
 const recorderManager = wx.getRecorderManager()
 const app = getApp()
+const db = wx.cloud.database()
+const userdb = db.collection('UserInfo')
 Component({
   properties: {
     envId: String,
@@ -14,6 +16,7 @@ Component({
     groupId: String,
     groupName: String,
     userInfo: Object,
+    friendId:String,
     onGetUserInfo: {
       type: Function,
     },
@@ -75,7 +78,7 @@ Component({
           chats: initList.reverse(),
           scrollTop: 10000,
         })
-
+        console.log("friend_id", this.properties.friendId)
         this.initWatch(initList.length ? {
           sendTimeTS: _.gt(initList[initList.length - 1].sendTimeTS),
         } : {})
@@ -181,6 +184,7 @@ Component({
           avatar: this.data.userInfo.avatarUrl,
           // nickName: this.data.userInfo.nickName,
           stuid: app.globalData.stuid,
+          friendId: this.properties.friendId,
           nickName: app.globalData.name,
           msgType: 'text',
           textContent: e.detail.value,
@@ -258,6 +262,7 @@ Component({
             groupId: this.data.groupId,
             avatar: this.data.userInfo.avatarUrl,
             stuid: app.globalData.stuid,
+            friendId: this.properties.friendId,
             nickName: app.globalData.name,
             msgType: 'record',
             sendTime: util.formatTime(new Date()),
@@ -389,6 +394,7 @@ Component({
               groupId: this.data.groupId,
               avatar: this.data.userInfo.avatarUrl,
               stuid: app.globalData.stuid,
+              friendId: this.properties.friendId,
               nickName: app.globalData.name,
               msgType: 'file',
               sendTime: util.formatTime(new Date()),
@@ -509,6 +515,7 @@ Component({
             groupId: this.data.groupId,
             avatar: this.data.userInfo.avatarUrl,
             stuid: app.globalData.stuid,
+            friendId: this.properties.friendId,
             nickName: app.globalData.name,
             msgType: 'image',
             sendTime: util.formatTime(new Date()),
@@ -564,9 +571,32 @@ Component({
         },
       })
     },
+    
+    onUserAvatarTap(e){//
+      console.log("点击用户头像",e)
+      let friend_id = e.currentTarget.dataset.detail.stuid
+      userdb.where({
+        student_id:friend_id
+      }).get().then((res)=>{
+        console.log("好友信息",res)
+        let userdetail = JSON.stringify(res.data[0])
+        //跳转到好友详情页
+        if (res.data[0].student_id == app.globalData.stuid) { //本人
+          wx.switchTab({
+            url: '/pages/info/info?userdetail=' + userdetail,
+          })
+        }
+        else {
+          wx.navigateTo({
+            url: '/pages/team/haoyoupage/haoyoupage?userdetail=' + userdetail,
+          })
+        }
+      })
 
-    onMessageImageTap(e) {
-      console.log("点击头像",e)
+    },
+
+    onMessageImageTap(e) {//
+      console.log("点击图像",e)
       wx.previewImage({
         urls: [e.target.dataset.fileid],
       })

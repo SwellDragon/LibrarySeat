@@ -22,6 +22,7 @@ Page({
       chatRoomGroupId: options.id,
       chatRoomGroupName:options.name,
       backgroundimage:options.backgroundimage,//背景图片
+      friendId: options.friend_id //好友学号
     })
     wx.setNavigationBarTitle({
       title: options.name

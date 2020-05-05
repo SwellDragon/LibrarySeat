@@ -133,7 +133,7 @@ checkfriend(){//获取好友列表
     // console.log(mystunum < friendstunum)
     // console.log(roomid)
     wx.navigateTo({
-      url: '/pages/team/room/room?id=' +roomid + '&name=' + haoyouinfo.friend_name + '&backgroundimage=' + "",
+      url: '/pages/team/room/room?id=' + roomid + '&name=' + haoyouinfo.friend_name + '&backgroundimage=' + "" + '&friend_id=' + haoyouinfo.friend_stuid 
     })
   },
 //接受好友请求

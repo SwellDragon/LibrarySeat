@@ -153,8 +153,60 @@ Page({
     }
     // console.log(mystunum < friendstunum)
     // console.log(roomid)
-    wx.navigateTo({
+    wx.redirectTo({
       url: '/pages/team/room/room?id=' + roomid + '&name=' + _this.data.userdetail.user_name + '&backgroundimage=' + "",
+    })
+  },
+  deletefriend(){
+    let _this = this;
+    console.log("点击删除好友")
+    wx.showModal({
+      title: '提示',
+      content: '是否删除该好友',
+      // confirmText:'是',
+      // cancelText:'否',
+      success(res) {
+        if (res.confirm) {
+          console.log('用户点击确定')
+          let detail = new Object()
+          detail.my_stuid = app.globalData.stuid
+          detail.friend_stuid = _this.data.userdetail.student_id
+          console.log("删除detail",detail)
+          //删除好友
+          wx.cloud.callFunction({
+            name:'yunrouter',
+            data:{
+              $url:'deletefriend',
+              detail: detail
+            },success(res){
+              console.log("删除好友",res)
+              if(res.result.is_ok){
+                wx.showToast({
+                  title: '删除好友成功',
+                  icon: 'none',
+                  duration: 1000,
+                })
+                setTimeout(function () {
+                  wx.switchTab({
+                    url: '/pages/team/team'
+                  })
+                }, 1200)
+                
+              }
+              else{
+                wx.showToast({
+                  title: res.result.msg,
+                  icon: 'none',
+                  duration: 1000,
+                })
+              }
+              }
+          })
+
+        } else if (res.cancel) {
+          console.log('用户点击取消')
+        }
+      }
     })
   },
   chooseimgae(){

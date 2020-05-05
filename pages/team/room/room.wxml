@@ -9,5 +9,6 @@
     onGetUserInfo="{{onGetUserInfo}}"
     getOpenID="{{getOpenID}}"
     backgroundimage="{{backgroundimage}}"
+    friendId="{{friendId}}"
   ></chatroom>
 </view>
