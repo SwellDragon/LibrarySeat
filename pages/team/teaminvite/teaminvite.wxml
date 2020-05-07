@@ -1,0 +1,39 @@
+<!--pages/team/teaminvite/teaminvite.wxml-->
+<!-- <text>pages/team/teaminvite/teaminvite.wxml</text> -->
+<scroll-view class="scrollList" scroll-y style="height:{{winHeight}}px">
+<view class="search-bar">
+        <view class="search-bar-form">
+          <view class="search-bar-box">
+            <input confirm-type="search" class="search-bar-input" placeholder="搜索好友" placeholder-class="phcolor" value="{{inputVal}}" focus="{{inputShowed}}" bindinput="inputTyping" />
+            <view wx:if="{{inputVal}}" bindtap="clearInput">
+              <icon type="clear" size="20"></icon>
+            </view>
+          </view>
+          <label class="search-bar-label" wx:if="{{!inputShowed}}" bindtap="showInput">
+            <view class="search-bar-text">搜索好友</view>
+          </label>
+        </view>
+      </view>
+      <!-- 搜索之后显示的东西-->
+      <view class="tui-list search-result" wx:if="{{inputVal}}">
+        <view class="goods-container">
+
+          <block wx:for="{{peopledetail}}" wx:key="student_id" wx:for-item="item" wx:for-index="index">
+            <tui-cell style="width:100%" tui-cell-class="tui-msg" last="{{true}}"  data-detail="{{item}}">
+              <view class="tui-msg-box">
+                <image src="{{item.userInfo.avatarUrl}}" class="tui-msg-pic" mode="widthFix"></image>
+                <view class="tui-msg-item">
+                  <view class="tui-msg-name">姓名：{{item.user_name}}</view>
+                  <view class="tui-msg-content">学号：{{item.student_id}}</view>
+                </view>
+              </view>
+              <view class="tui-msg-right {{item.level==3?'tui-right-dot':''}}">
+                <!-- <view class="tui-msg-time">性别：{{item.userInfo.gender==1?'男':'女'}}</view> -->
+                <tui-tag bindtap="invitepeople" style="width:18vw" size="small"  data-detail="{{item}}" data-index="{{index}}" tui-tag-class="tui-mrbtm">{{state[index]}}</tui-tag>
+              </view>
+            </tui-cell>
+          </block>
+
+        </view>
+      </view>
+</scroll-view>

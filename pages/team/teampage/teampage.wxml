@@ -1,0 +1,58 @@
+<!--pages/team/teampage/teampage.wxml-->
+<!-- <text>pages/team/teampage/teampage.wxml</text> -->
+<view wx:if="{{have_team}}">
+  <view class="tui-cells {{open ? 'tui-cells_show' : ''}}">
+    <tui-cell style="width:100%" tui-cell-class="tui-msg" last="{{true}}">
+      <view class="tui-msg-box">
+        <image src="{{peoplelist[index].peopleask.avatarUrl}}" class="tui-msg-pic" mode="widthFix"></image>
+        <view class="tui-msg-item">
+          <view class="tui-msg-headname">{{team_name}}</view>
+          <view class="tui-msg-content">id:{{team_id}}</view>
+        </view>
+      </view>
+      <view class="tui-msg-right">
+        <tui-tag bindtap="" style="width:20vw" shape="circle" size="small" type="green" tui-tag-class="tui-mrbtm" bindtap="changeteam_name">修改队伍名</tui-tag>
+      </view>
+      <modal hidden="{{hiddenmodal}}" title="修改队伍名" confirm-text="修改" cancel-text="返回" bindcancel="cancel" bindconfirm="confirm">
+        <input bindinput="team_name_inputer" type='text' placeholder="请输入新的队伍名" auto-focus/>
+      </modal>
+    </tui-cell>
+  </view>
+
+
+  <button bindtap="tochatroom">开始聊天</button>
+  <view style="width:100vw" class="kind-list">
+    <view class="kind-list_item">
+      <view class="tui-flex kind-list_item-hd">
+        <view class="tui-flex_item">队伍成员列表</view>
+        <tui-badge bindtap="toinvitepage" tui-badge-class="tui-badge">邀请好友</tui-badge>
+      </view>
+      <view class="kind-list_item-bd {{open ? 'kind-list_item-bd_show' : ''}}">
+        <view class="tui-cells {{open ? 'tui-cells_show' : ''}}">
+          <block wx:for-items="{{peoplelist}}" wx:for-item="item" wx:key="item">
+            <tui-cell bindtap="tostupage" data-detail="{{item}}" style="width:100%" tui-cell-class="tui-msg" last="{{true}}" >
+              <view class="tui-msg-box">
+                <image src="{{peoplelist[index].peopleask.avatarUrl}}" class="tui-msg-pic" mode="widthFix"></image>
+                <view class="tui-msg-item">
+                  <view class="tui-msg-name">姓名：{{peoplelist[index].user_name}}</view>
+                  <view class="tui-msg-content">学号：{{peoplelist[index].student_id}}</view>
+                </view>
+              </view>
+              <view class="tui-msg-right">
+                <tui-tag wx:if="{{is_owner && item.student_id!=stuid}}" data-info="{{peoplelist[index]}}" catchtap="deletepeople" style="width:18vw" shape="circle" size="small" type="red" tui-tag-class="tui-mrbtm">删除成员</tui-tag>
+              </view>
+            </tui-cell>
+          </block>
+        </view>
+      </view>
+    </view>
+  </view>
+  <button wx:if="{{is_owner}}" type="warn">解散队伍</button>
+  <button wx:else type="warn">退出队伍</button>
+</view>
+
+
+<view wx:else>
+  <text>你还没有属于你的队伍</text>
+  <button bindtap="creatTeam">创建队伍</button>
+</view>

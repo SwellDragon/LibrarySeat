@@ -34,7 +34,8 @@
     "pages/register/register",
     "pages/team/team",
     "pages/team/room/room",
-    
+    "pages/team/teampage/teampage",
+    "pages/team/teaminvite/teaminvite",
     "pages/info/info",
     "pages/index/index",
     "pages/logs/logs"

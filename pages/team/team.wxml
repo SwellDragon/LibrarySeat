@@ -6,13 +6,13 @@
       <view class="search-bar">
         <view class="search-bar-form">
           <view class="search-bar-box">
-            <input confirm-type="search" class="search-bar-input" placeholder="输入所搜索的内容" placeholder-class="phcolor" value="{{inputVal}}" focus="{{inputShowed}}" bindinput="inputTyping" />
+            <input confirm-type="search" class="search-bar-input" placeholder="搜索好友" placeholder-class="phcolor" value="{{inputVal}}" focus="{{inputShowed}}" bindinput="inputTyping" />
             <view wx:if="{{inputVal}}" bindtap="clearInput">
               <icon type="clear" size="20"></icon>
             </view>
           </view>
           <label class="search-bar-label" wx:if="{{!inputShowed}}" bindtap="showInput">
-            <view class="search-bar-text">输入搜索的内容</view>
+            <view class="search-bar-text">搜索好友</view>
           </label>
         </view>
       </view>
@@ -75,7 +75,7 @@
                           </view>
                         </view>
                         <view class="tui-msg-right">
-                        <tui-tag data-info="{{peoplecheck[index]}}" bindtap="confirmpeopleadd" style="width:18vw" shape="circle" size="small" type="green" tui-tag-class="tui-mrbtm" >接收请求</tui-tag>
+                          <tui-tag data-info="{{peoplecheck[index]}}" bindtap="confirmpeopleadd" style="width:18vw" shape="circle" size="small" type="green" tui-tag-class="tui-mrbtm">接收请求</tui-tag>
                           <tui-tag data-info="{{peoplecheck[index]}}" bindtap="cancelpeopleadd" style="width:18vw" shape="circle" size="small" type="red" tui-tag-class="tui-mrbtm">拒绝请求</tui-tag>
                         </view>
                       </tui-cell>
@@ -96,10 +96,11 @@
 
 
           <!-- 聊天室的东西-->
-          <view style="width:100vw" class="kind-list" bindtap="openActionSheet">
+          <!-- <view style="width:100vw" class="kind-list" bindtap="openActionSheet"> -->
+          <view style="width:100vw" class="kind-list" bindtap="toTeamPage">
             <view class="kind-list_item">
               <view class="tui-flex kind-list_item-hd }}">
-                <view class="tui-flex_item">聊天室测试</view>
+                <view class="tui-flex_item">我的队伍</view>
                 <image class="kind-list_img tui-img-7" src="/image/chat.png"></image>
               </view>
             </view>
@@ -139,15 +140,9 @@
             </tui-cell>
           </block>
           <view class="tui-safearea-bottom"></view>
-
         </view>
         <!-- 搜索好友时候的界面结束view组件-->
       </view>
-
-
     </scroll-view>
   </view>
-
-
-
 </block>

@@ -15,7 +15,6 @@ Page({
     showActionSheet: false,
     phone: '',
     chachong: 0,//代表着没有添加这个好友
-
     stuid:""
   },
   go(e) {
@@ -58,6 +57,11 @@ Page({
       })
     }
     
+  },
+  toTeamPage:function(e){
+    wx.navigateTo({
+      url: '/pages/team/teampage/teampage',
+    })
   },
   kindToggle: function (e) {
     this.setData({

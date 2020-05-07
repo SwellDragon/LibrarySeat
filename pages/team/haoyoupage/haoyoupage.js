@@ -19,7 +19,6 @@ Page({
       userdetail: userdetail
     })
     console.log(this.data.userdetail)
-
     //判断是否有该好友，本地判断
     var userstuid = this.data.userdetail.student_id
     for (var i = 0; i < app.globalData.friends.length; i++) {

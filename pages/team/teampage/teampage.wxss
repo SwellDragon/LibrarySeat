@@ -1,0 +1,75 @@
+/* pages/team/teampage/teampage.wxss */
+.tui-msg-item {
+max-width: 500rpx;
+min-height: 80rpx;
+overflow: hidden;
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+}
+.tui-msg-headname {
+overflow: hidden;
+white-space: nowrap;
+text-overflow: ellipsis;
+font-size: 35rpx;
+line-height: 1;
+color: #262b3a;
+}
+.tui-msg-name {
+overflow: hidden;
+white-space: nowrap;
+text-overflow: ellipsis;
+font-size: 35rpx;
+line-height: 1;
+color: #262b3a;
+}
+.tui-msg-content {
+overflow: hidden;
+white-space: nowrap;
+text-overflow: ellipsis;
+font-size: 28rpx;
+line-height: 1;
+color: #9397a4;
+}
+.kind-list_item {
+margin: 10px 0;
+background-color: #fff;
+border-radius: 2px;
+overflow: hidden;
+}
+.tui-flex {
+display: -webkit-box;
+display: -webkit-flex;
+display: flex;
+}
+.tui-flex_item {
+-webkit-box-flex: 1;
+-webkit-flex: 1;
+flex: 1;
+}
+.kind-list_item-hd {
+padding: 20px;
+-webkit-transition: opacity 0.3s;
+transition: opacity 0.3s;
+}
+.tui-msg-right {
+max-width: 180rpx;
+height: 88rpx;
+margin-left: auto;
+text-align: right;
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+align-items: flex-end;
+}
+.tui-msg-box {
+display: flex;
+align-items: center;
+}
+.tui-msg-pic {
+width: 100rpx;
+height: 100rpx;
+border-radius: 50%;
+display: block;
+margin-right: 24rpx;
+}

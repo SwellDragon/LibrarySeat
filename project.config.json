@@ -85,6 +85,13 @@
 					"id": -1,
 					"name": "pages/register/register",
 					"pathName": "pages/register/register",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/team/teampage/teampage",
+					"pathName": "pages/team/teampage/teampage",
 					"scene": null
 				}
 			]
