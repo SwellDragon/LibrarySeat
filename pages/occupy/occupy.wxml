@@ -40,14 +40,17 @@
 </view>
 <!-- 座位排列 -->
 <view wx:if="{{isquery}}">
-<text>{{querydata.addr}} {{querydata.floor}} {{querydata.room}}{{querydata.day}}{{querydata.starttime}}-{{querydata.endtime}}</text>
+  <text>{{querydata.addr}} {{querydata.floor}} {{querydata.room}}{{querydata.day}}{{querydata.starttime}}-{{querydata.endtime}}</text>
   <!-- for循环每一行 -->
   <view wx:for="{{row}}" wx:for-index="rowindex">
     <!-- 最上方列标识 -->
     <view class="seat-top" wx:if="{{rowindex==0}}">
-    <block wx:for="{{col}}" wx:for-index="colindex">
-    <view>{{colindex}}</view>
-    </block>
+      <view >
+        <block wx:for="{{col}}" wx:for-index="colindex">
+          <view>{{colindex}}</view>
+        </block>
+      </view>
+
       <!-- <text wx:for="{{col}}" wx:for-index="colindex">{{colindex}}</text> -->
     </view>
     <!-- 若不是最上方，则显示座位 -->
