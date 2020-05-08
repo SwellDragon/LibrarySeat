@@ -67,7 +67,7 @@ App({
     name: null, //姓名
     // stuid: '2016210019', //学号
     // name: '陈伟龙',  //姓名
-    stuseatmsg: null, //当前占用座位信息
+    stuseatmsg: [], //当前占用座位信息
     team_id: "", //所属队伍id
     friends: [],
     teammsg: null

@@ -20,12 +20,17 @@
     <view>{{item.addr}} {{item.floor}}层{{item.room}} {{item.row}}行 {{item.col}}列 </view>
     <view class="time">{{item.start_time}}-{{item.end_time}}</view>
     <view class="detail">
-      <text>{{is_sign[index]?'已签到':'未签到'}} </text>
-      <text>{{is_late[index]?'迟到':' '}}</text>
-      <text>{{is_free[index]?'空闲':' '}}</text>
-      <text color="red">{{is_cancel[index]?'已取消':' '}}</text>
-      <text class="signbut" wx:if="{{can_sign[index]}}" bindtap="sign" data-index="{{index}}" data-item="{{item}}">签到</text>
-      <text class="cancelbut" wx:if="{{show_cancel[index]}}" bindtap="cancel" data-index="{{index}}" data-item="{{item}}">取消预约</text>
+      <view>
+        <text>{{is_sign[index]?'已签到':'未签到'}} </text>
+        <text>{{is_late[index]?'迟到':' '}}</text>
+        <text>{{is_free[index]?'空闲':' '}}</text>
+        <text color="red">{{is_cancel[index]?'已取消':' '}}</text>
+      </view>
+      <view style="margin-left: auto">
+        <text class="signbut" style="width:12vw;margin-right: 5rpx" wx:if="{{can_sign[index]}}" bindtap="sign" data-index="{{index}}" data-item="{{item}}">签到</text>
+        <text class="cancelbut" style="width:20vw;margin-right: 15rpx" wx:if="{{show_cancel[index]}}" bindtap="cancel" data-index="{{index}}" data-item="{{item}}">取消预约</text>
+      </view>
+
     </view>
   </view>
 </view>

@@ -348,7 +348,12 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-
+    let startime = new Date(Date.parse(new Date())+15*60*1000)
+    let starttime = startime.getHours() + ":" + startime.getMinutes()
+    // console.log(startime, starttime)
+    this.setData({
+      starttime: starttime
+    })
   },
   clickSeat: function(res) {
 
