@@ -5,10 +5,8 @@ const frienddb = db.collection('FriendMsg')
 const userdb = db.collection('UserInfo')
 const teamdb = db.collection('TeamMsg')
 const orderdb = db.collection('OrderMsg')
-// const addfrienddb = db.collection('AddFriendMsg')
 const _ = db.command
 Page({
-
   /**
    * 页面的初始数据
    */
@@ -359,7 +357,7 @@ Page({
    */
   onLoad: function(options) {
     let _this = this
-    app.globalData.stuid = '2016210019'
+    // app.globalData.stuid = '2016210019'
     this.setData({
       stuid: app.globalData.stuid
     })
