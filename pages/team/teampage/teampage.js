@@ -46,10 +46,12 @@ Page({
                   team_name: res.result.team_id,
                   is_owner: true
                 })
+                _this.get_team_member()
               } else {
                 wx.showModal({
                   title: '提示',
                   content: '创建队伍失败',
+                  showCancel: false,
                 })
               }
             }
@@ -159,14 +161,7 @@ Page({
                   duration: 1000,
                 })
                 //更新队伍成员列表
-                userdb.where({
-                  team_id: app.globalData.team_id
-                }).get().then((res) => {
-                  _this.setData({
-                    peoplelist: res.data
-                  })
-                })
-                
+                _this.get_team_member()
               } else {
                 wx.showModal({
                   title: '删除成员失败',
@@ -211,6 +206,152 @@ Page({
     wx.navigateTo({
       url: '/pages/team/room/room?id=' + this.data.team_id + '&name=' + this.data.team_name + '&backgroundimage=' + "" + '&friend_id='
     })
+  },
+  get_team_member(){
+    let _this = this
+    //查询队伍中人员
+    userdb.where({
+      team_id: app.globalData.team_id
+    }).get().then((res) => {
+      _this.setData({
+        peoplelist: res.data
+      })
+    })
+  },
+  quit_team(e){
+    let _this = this
+    console.log("退出队伍")
+    wx.showModal({
+      title: '警告',
+      content: '是否确定要退出当前队伍',
+      success(res) {
+        if (res.confirm) {
+          console.log('用户点击确定')
+          userdb.where({
+            student_id:app.globalData.stuid,
+            team_id:_this.data.team_id
+          }).update({
+            data:{
+              team_id:""
+            }
+          }).then((res)=>{
+            console.log(res)
+            if (res.stats.updated == 1) {
+              console.log("退出队伍成功", res)
+              wx.showModal({
+                title: '提示',
+                content: '退出队伍成功',
+                showCancel: false,
+                success(res) {
+                  if (res.confirm) {
+                    console.log('用户点击确定')
+                    app.globalData.team_id = ""
+                    setTimeout(function () {
+                      wx.switchTab({
+                        url: '/pages/team/team'
+                      })
+                    }, 1200)
+                  } else if (res.cancel) {
+                    console.log('用户点击取消')
+                  }
+                }
+              })
+            }
+            else if (res.stats.updated == 0) {
+              console.log("用户与队伍ID不匹配", res)
+              wx.showModal({
+                title: '提示',
+                content: '用户与队伍ID不匹配',
+                showCancel: false,
+                success(res) {
+                  if (res.confirm) {
+                    console.log('用户点击确定')
+                  } else if (res.cancel) {
+                    console.log('用户点击取消')
+                  }
+                }
+              })
+            }
+            else {
+              console.log("退出队伍异常，疑似出现多个匹配账号，请联系管理员", res)
+              wx.showModal({
+                title: '警告',
+                content: '退出队伍异常，疑似出现多个匹配账号，请联系管理员',
+                showCancel: false,
+                success(res) {
+                  if (res.confirm) {
+                    console.log('用户点击确定')
+                  } else if (res.cancel) {
+                    console.log('用户点击取消')
+                  }
+                }
+              })
+            }
+          })
+        } else if (res.cancel) {
+          console.log('用户点击取消')
+        }
+      }
+    })
+  },
+  disband_team(e){
+    let _this = this
+    console.log("解散队伍")
+    wx.showModal({
+      title: '提示',
+      content: '是否要解散当前队伍，此操作不可逆',
+      success(res) {
+        if (res.confirm) {
+          console.log('用户点击确定')
+          wx.cloud.callFunction({
+            name: "yunrouter",
+            data: {
+              $url: "disband_team",
+              team_id: _this.data.team_id,
+              stuid: app.globalData.stuid
+            }, success(res) {
+              console.log("解散队伍云函数返回", res)
+              if (res.result.is_ok) {
+                wx.showModal({
+                  title: '提示',
+                  content: '解散队伍成功',
+                  showCancel: false,
+                  success(res) {
+                    if (res.confirm) {
+                      console.log('用户点击确定')
+                      app.globalData.team_id = ""
+                      setTimeout(function () {
+                        wx.switchTab({
+                          url: '/pages/team/team'
+                        })
+                      }, 1200)
+                    } else if (res.cancel) {
+                      console.log('用户点击取消')
+                    }
+                  }
+                })
+              } else {
+                wx.showModal({
+                  title: '提示',
+                  content: res.result.msg,
+                  showCancel: false,
+                  success(res) {
+                    if (res.confirm) {
+                      console.log('用户点击确定')
+                    } else if (res.cancel) {
+                      console.log('用户点击取消')
+                    }
+                  }
+                })
+              }
+            }
+          })
+        } else if (res.cancel) {
+          console.log('用户点击取消')
+        }
+      }
+    })
+   
   },
 
   /**
@@ -268,13 +409,7 @@ Page({
           })
         })
         //查询队伍中人员
-        userdb.where({
-          team_id: app.globalData.team_id
-        }).get().then((res) => {
-          _this.setData({
-            peoplelist: res.data
-          })
-        })
+        this.get_team_member()
       }
     })
   },

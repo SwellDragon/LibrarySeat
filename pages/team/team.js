@@ -70,6 +70,7 @@ Page({
   },
 
   onLoad() {
+    app.uploadavatar()
     this.getheight()
     this.setData({
       ifopen: 1,//app.globalData.ifopen
@@ -78,9 +79,9 @@ Page({
   },
 
   onShow: function (options) {
-    //重新更新好友列表
+    //更新好友列表
     this.checkfriend()
-    //重新获取好友申请
+    //获取好友申请
     this.checkpeopleadd();
     if (app.globalData.openid) {
       this.setData({
@@ -92,16 +93,31 @@ Page({
   },
 
 checkfriend(){//获取好友列表
+let _this = this
   console.log(this.data.stuid)
     frienddb.where({
       my_stuid: app.globalData.stuid
       // my_stuid: '2016210019'
-    }).get().then((res)=>{
+    }).get().then(async (res)=>{
       console.log("好友列表",res)
       this.setData({
         peoplelist: res.data,
       })
       app.globalData.friends = res.data
+      //获取用户头像
+      for(let i = 0;i<res.data.length;i++){
+        userdb.where({
+          student_id: res.data[i].friend_stuid
+        }).get().then((res)=>{
+          console.log("获取头像",res)
+          app.globalData.friends[i].avatarUrl = res.data[0].avatarUrl
+          _this.setData({
+            peoplelist: app.globalData.friends
+          })
+          // console.log(_this.data.peoplelist)
+        })
+      }
+      
     })
   },
   //检查是否有请求添加好友的
@@ -115,6 +131,20 @@ checkfriend(){//获取好友列表
       _this.setData({
         peoplecheck: res.data
       })
+      let peoplecheckdata = res.data 
+      //获取用户头像
+      for (let i = 0; i < res.data.length; i++) {
+        userdb.where({
+          student_id: res.data[i].applicant_stuid
+        }).get().then((res) => {
+          console.log("获取头像", res)
+          peoplecheckdata[i].avatarUrl = res.data[0].avatarUrl
+          _this.setData({
+            peoplecheck: peoplecheckdata
+          })
+          console.log(_this.data.peoplecheck)
+        })
+      }
       
     })
     

@@ -40,10 +40,16 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
-    let s = "team_2016210019_0"
-    let ss = s.split('_')
-    console.log(ss)
+    let a={
+      b:1,
+      c:2,
+    }
+    console.log(a)
+    a.d = 2
+    console.log(a)
+    // let s = "team_2016210019_0"
+    // let ss = s.split('_')
+    // console.log(ss)
     // this.test()
     // seatdb.where({
     //   stuid: submitdata.stuid,

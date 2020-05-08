@@ -127,7 +127,7 @@ exports.main = async(event, context) => {
   })
   app.router('creatTeam', async(ctx) => {
     let id = ""
-    console.log("创建队伍",event)
+    console.log("创建队伍", event)
     await orderdb.where({
       key: "team_num"
     }).get().then(async(res) => {
@@ -135,76 +135,73 @@ exports.main = async(event, context) => {
       id = 'team_' + event.stuid + '_' + res.data[0].value
       console.log("team_id:", res.data[0].value)
       await orderdb.doc(res.data[0]._id).update({
-        data:{
-          value:_.inc(1)
+        data: {
+          value: _.inc(1)
         }
       })
       return teamdb.add({
-        data:{
-          team_name:id,
-          team_id:id
+        data: {
+          team_name: id,
+          team_id: id
         }
       })
-      }).then(async (res) => {
-        if (res.errMsg == "collection.add:ok") {
-          console.log("创建队伍成功")
-          await userdb.where({
-            student_id:event.stuid
-          }).update({
-            data:{
-              team_id: id
-            }
-            
-          })
-          ctx.body = {
-            is_ok: true,
+    }).then(async(res) => {
+      if (res.errMsg == "collection.add:ok") {
+        console.log("创建队伍成功")
+        await userdb.where({
+          student_id: event.stuid
+        }).update({
+          data: {
             team_id: id
           }
+
+        })
+        ctx.body = {
+          is_ok: true,
+          team_id: id
         }
-        else {
-          ctx.body = {
-            is_ok: false,
-          }
+      } else {
+        ctx.body = {
+          is_ok: false,
         }
-      })
+      }
+    })
   })
-  app.router('invitepeople', async (ctx) => {
+  app.router('invitepeople', async(ctx) => {
     console.log(event)
     //查找这个人没有加入队伍
     await userdb.where({
       student_id: event.student_id,
-      team_id:""
+      team_id: ""
     }).update({
-      data:{
-        team_id:event.team_id
+      data: {
+        team_id: event.team_id
       }
-      }).then(async (res)=>{
-        console.log(res)
-      if(res.stats.updated==1){
-        console.log("已拉入队伍",res)
-        ctx.body={
-          is_ok:true
+    }).then(async(res) => {
+      console.log(res)
+      if (res.stats.updated == 1) {
+        console.log("已拉入队伍", res)
+        ctx.body = {
+          is_ok: true
         }
-      }
-      else if (res.stats.updated == 0){
+      } else if (res.stats.updated == 0) {
         console.log("该用户已经拥有了队伍", res)
         ctx.body = {
           is_ok: false,
           msg: "该用户已经拥有了队伍"
         }
-      }
-      else{
+      } else {
         console.log("加入队伍出现异常", res)
         ctx.body = {
           is_ok: false,
           msg: "加入队伍出现异常，请联系管理员"
         }
       }
-      
+
     })
   })
 
-  app.router('change_team_name', async (ctx) => {
+  app.router('change_team_name', async(ctx) => {
 
     await teamdb.where({
       team_id: event.team_id
@@ -215,31 +212,31 @@ exports.main = async(event, context) => {
     }).then((res) => {
       console.log(res)
       if (res.stats.updated == 1) {
-        ctx.body={
-          is_ok:true
+        ctx.body = {
+          is_ok: true
         }
       } else if (res.stats.updated == 0) {
-        ctx.body={
-          is_ok:false,
+        ctx.body = {
+          is_ok: false,
           msg: "数据库更新失败"
         }
       } else {
-        ctx.body={
-          is_ok:false,
-          msg:"疑似出现重复team_id,请联系管理员"
+        ctx.body = {
+          is_ok: false,
+          msg: "疑似出现重复team_id,请联系管理员"
         }
       }
     })
   })
-  app.router('delete_team_member', async (ctx) => {
+  app.router('delete_team_member', async(ctx) => {
     await userdb.where({
       student_id: event.member_stuid,
       team_id: event.team_id
     }).update({
-      data:{
-        team_id:""
+      data: {
+        team_id: ""
       }
-    }).then((res)=>{
+    }).then((res) => {
       console.log(res)
       if (res.stats.updated == 1) {
         ctx.body = {
@@ -254,6 +251,29 @@ exports.main = async(event, context) => {
         ctx.body = {
           is_ok: false,
           msg: "出现奇怪的异常,更新数量大于1,请联系管理员"
+        }
+      }
+    })
+  })
+
+  app.router('disband_team', async(ctx) => {
+    console.log(event)
+    await userdb.where({
+      team_id: event.team_id
+    }).update({
+      data: {
+        team_id: ""
+      }
+    }).then((res) => {
+      console.log(res)
+      if (res.stats.updated >0) {
+        ctx.body = {
+          is_ok: true
+        }
+      }else {
+        ctx.body = {
+          is_ok: false,
+          msg: "数据库更新失败"
         }
       }
     })
