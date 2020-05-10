@@ -42,7 +42,6 @@ exports.main = async(event, context) => {
     console.log("添加之后", res,_id)
     //检查是否存在冲突
     return seatdb.where({
-      
       addr: submitdata.addr,
       floor: submitdata.floor,
       room: submitdata.room,

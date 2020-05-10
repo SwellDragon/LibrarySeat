@@ -123,10 +123,12 @@ exports.main = async(event, context) => {
       //待预约起始时间或结束时间在已预约起始时间和结束时间中间的座位不可用 或待预约开始时间比已预约开始时间早且其带预约结束时间比已预约结束时间晚不可用，其余可用
       console.log(seatmsg[i])
       console.log("尝试", date.startdate, seatmsg[i].end_time, date.startdate < seatmsg[i].end_time)
-      if (date.startdate >= seatmsg[i].start_time && date.startdate <= seatmsg[i].end_time ||
+      if ((date.startdate >= seatmsg[i].start_time && date.startdate <= seatmsg[i].end_time ||
         date.enddate >= seatmsg[i].start_time && date.enddate <= seatmsg[i].end_time ||
-        date.startdate <= seatmsg[i].start_time && date.enddate >= seatmsg[i].end_time
-      ) {
+        date.startdate <= seatmsg[i].start_time && date.enddate >= seatmsg[i].end_time) && 
+        (!seatmsg[i].is_free || (seatmsg[i].is_free && (data.startdate < seatmsg[i].free_start || data.enddate > seatmsg[i].free_end)))
+        
+      ) { //待预约时间与已预约时间冲突 且 不空闲或空闲但空闲时间不完全包含待预约时间
         // count++
         //标定不可用
         if (seatmsg[i].stuid == event.stuid) {

@@ -90,44 +90,52 @@ Page({
   confirm(e) {
     let _this = this
     console.log("用户点击确定", this.data.team_name_input, this.data.team_id)
-
-    //修改队伍名
-    wx.cloud.callFunction({
-      name: "yunrouter",
-      data: {
-        $url: "change_team_name",
-        team_id: _this.data.team_id,
-        new_team_name: _this.data.team_name_input
-      },
-      success(res) {
-        console.log(res)
-        if (res.result.is_ok) {
-          wx.showToast({
-            title: '修改队伍名成功',
-            icon: 'none',
-            duration: 1000,
-          })
-          _this.setData({
-            hiddenmodal: true,
-            team_name: _this.data.team_name_input,
-            team_name_input:""
-          })
-        } else {
-          wx.showModal({
-            title: '修改队伍名失败',
-            content: res.result.msg,
-            showCancel: false,
-            success(res) {
-              if (res.confirm) {
-                console.log('用户点击确定')
-              } else if (res.cancel) {
-                console.log('用户点击取消')
+    if (_this.data.team_name_input==""){
+      wx.showToast({
+        title: '输入队伍名为空',
+        icon: 'none',
+        duration: 1000,
+      })
+    }else{
+      //修改队伍名
+      wx.cloud.callFunction({
+        name: "yunrouter",
+        data: {
+          $url: "change_team_name",
+          team_id: _this.data.team_id,
+          new_team_name: _this.data.team_name_input
+        },
+        success(res) {
+          console.log(res)
+          if (res.result.is_ok) {
+            wx.showToast({
+              title: '修改队伍名成功',
+              icon: 'none',
+              duration: 1000,
+            })
+            _this.setData({
+              hiddenmodal: true,
+              team_name: _this.data.team_name_input,
+              team_name_input: ""
+            })
+          } else {
+            wx.showModal({
+              title: '修改队伍名失败',
+              content: res.result.msg,
+              showCancel: false,
+              success(res) {
+                if (res.confirm) {
+                  console.log('用户点击确定')
+                } else if (res.cancel) {
+                  console.log('用户点击取消')
+                }
               }
-            }
-          })
-        } 
-      }
-    })
+            })
+          }
+        }
+      })
+    }
+    
   },
   cancel(e) {
     console.log("用户点击取消")

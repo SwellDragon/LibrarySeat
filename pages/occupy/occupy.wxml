@@ -45,12 +45,11 @@
   <view wx:for="{{row}}" wx:for-index="rowindex">
     <!-- 最上方列标识 -->
     <view class="seat-top" wx:if="{{rowindex==0}}">
-      <view >
-        <block wx:for="{{col}}" wx:for-index="colindex">
-          <view>{{colindex}}</view>
-        </block>
-      </view>
 
+      <block wx:for="{{col}}" wx:for-index="colindex">
+        <view wx:if="{{colindex==0}}" style="width:20rpx;margin-left=20rpx">{{' '+colindex}}</view>
+        <view wx:else style="width:20rpx; margin-left:auto;margin-right:auto">{{colindex}}</view>
+      </block>
       <!-- <text wx:for="{{col}}" wx:for-index="colindex">{{colindex}}</text> -->
     </view>
     <!-- 若不是最上方，则显示座位 -->
