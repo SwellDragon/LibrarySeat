@@ -67,8 +67,10 @@ function analysis(studata, _this) {
       show_canceldata[i] = true
     }
     //修改每个时间数据
-    // studata[i].start_time = new Date(studata[i].start_time)
-    // studata[i].end_time = new Date(studata[i].end_time)
+    studata[i].start_time = new Date(studata[i].start_time)//占座后，修改返回的字符串时间为date格式
+    studata[i].end_time = new Date(studata[i].end_time)
+    studata[i].free_start = new Date(studata[i].free_start)
+    studata[i].free_end = new Date(studata[i].free_end)
     studata[i].start_time = util.formatTime(studata[i].start_time)
     studata[i].end_time = util.formatTime(studata[i].end_time)
     studata[i].free_start = studata[i].free_start.getHours() + ':' + studata[i].free_start.getMinutes() 

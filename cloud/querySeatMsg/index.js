@@ -126,7 +126,7 @@ exports.main = async(event, context) => {
       if ((date.startdate >= seatmsg[i].start_time && date.startdate <= seatmsg[i].end_time ||
         date.enddate >= seatmsg[i].start_time && date.enddate <= seatmsg[i].end_time ||
         date.startdate <= seatmsg[i].start_time && date.enddate >= seatmsg[i].end_time) && 
-        (!seatmsg[i].is_free || (seatmsg[i].is_free && (data.startdate < seatmsg[i].free_start || data.enddate > seatmsg[i].free_end)))
+        (!seatmsg[i].is_free || (seatmsg[i].is_free && (date.startdate < seatmsg[i].free_start || date.enddate > seatmsg[i].free_end)))
         
       ) { //待预约时间与已预约时间冲突 且 不空闲或空闲但空闲时间不完全包含待预约时间
         // count++
