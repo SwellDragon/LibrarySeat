@@ -62,6 +62,7 @@ function analysis(studata, _this) {
       is_canceldata[i] = true
       show_canceldata[i] = false
       can_signdata[i] = false
+      can_leavedata[i] = false
     } else {
       is_canceldata[i] = false
       show_canceldata[i] = true
@@ -71,10 +72,11 @@ function analysis(studata, _this) {
     studata[i].end_time = new Date(studata[i].end_time)
     studata[i].free_start = new Date(studata[i].free_start)
     studata[i].free_end = new Date(studata[i].free_end)
+    // console.log(studata[i].free_start, studata[i].free_start.getHours())
     studata[i].start_time = util.formatTime(studata[i].start_time)
     studata[i].end_time = util.formatTime(studata[i].end_time)
-    studata[i].free_start = studata[i].free_start.getHours() + ':' + studata[i].free_start.getMinutes() 
-    studata[i].free_end = studata[i].free_end.getHours() + ':' + studata[i].free_end.getMinutes()
+    studata[i].free_startdata = studata[i].free_start.getHours() + ':' + studata[i].free_start.getMinutes() 
+    studata[i].free_enddata = studata[i].free_end.getHours() + ':' + studata[i].free_end.getMinutes()
   }
   // console.log(res)
   _this.setData({

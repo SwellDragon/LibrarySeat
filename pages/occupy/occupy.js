@@ -205,7 +205,8 @@ Page({
             row: rowarry,
             col: colarry,
             isquery: true,
-            querydata: querydata
+            querydata: querydata,
+            selectseat:[0,0]
           })}else{
           wx.showModal({
             title: '提示',

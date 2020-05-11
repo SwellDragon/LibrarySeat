@@ -9,7 +9,7 @@
       <view>
         <text>{{is_sign[index]?'已签到 ':'未签到 '}} </text>
         <text>{{is_late[index]?'迟到 ':' '}}</text>
-        <text style="color:red">{{is_free[index]?item.free_start+'-'+item.free_end+'暂离' :' '}}</text>
+        <text style="color:red">{{is_free[index]?item.free_startdata+'-'+item.free_enddata+'暂离' :' '}}</text>
         <text color="red">{{is_cancel[index]?'已取消 ':' '}}</text>
       </view>
 
