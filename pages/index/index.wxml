@@ -1,8 +1,8 @@
 <!--index.wxml-->
-<view>{{name}}同学你好</view>
-<view font-size="25px">您的预约</view>
-<view wx:for="{{seatmsg}}" wx:key="_id" wx:for-item="item" wx:for-index="index">
-  <view>
+<view>{{name}} 同学你好</view>
+<view font-size="25px">您有以下预约</view>
+<scroll-view  wx:for="{{seatmsg}}" wx:key="_id" wx:for-item="item" wx:for-index="index">
+  <view class="item">
     <view>{{item.addr}} {{item.floor}}层{{item.room}} {{item.row}}行 {{item.col}}列 </view>
     <view class="time">{{item.start_time}}-{{item.end_time}}</view>
     <view class="detail">
@@ -19,20 +19,21 @@
         <text class="cancelbut" style="width:20vw;margin-right: 15rpx" wx:if="{{show_cancel[index]}}" bindtap="cancel" data-index="{{index}}" data-item="{{item}}">取消预约</text>
       </view>
 
-      <modal data-detail="{{item}}" data-index="{{index}}" hidden="{{hiddenmodal}}" title="暂时离开" confirm-text="确定离开" cancel-text="返回" bindcancel="back" bindconfirm="confirm">
+      
+    </view>
+  </view>
+  <modal data-detail="{{item}}" data-index="{{index}}" hidden="{{hiddenmodal}}" title="暂时离开" confirm-text="确定离开" cancel-text="返回" bindcancel="back" bindconfirm="confirm">
         <view class="time">
-      <picker name="starttime" mode="time" value="{{starttime}}" start="06:00" end="{{endtime}}" bindchange="startTimeChange">
+      <picker name="starttime" mode="time" value="{{starttime}}" start="{{startleavetime}}" end="{{endtime}}" bindchange="startTimeChange">
         <view class="picker">
           开始时间: {{starttime}}
         </view>
       </picker>
-      <picker name="endtime" class="endtime" mode="time" value="{{endtime}}" start="{{starttime}}" end="23:00" bindchange="endTimeChange">
+      <picker name="endtime" class="endtime" mode="time" value="{{endtime}}" start="{{starttime}}" end="{{endleavetime}}" bindchange="endTimeChange">
         <view class="picker">
           结束时间: {{endtime}}
         </view>
       </picker>
     </view>
       </modal>
-    </view>
-  </view>
-</view>
+</scroll-view>

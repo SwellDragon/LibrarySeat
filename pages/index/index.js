@@ -16,6 +16,7 @@ let is_canceldata = []
 let can_leavedata = []
 let can_signdata = []
 let show_canceldata = []
+let hideindex = -1;
 
 function analysis(studata, _this) {
   console.log("调用analysis")
@@ -107,6 +108,8 @@ Page({
     hiddenmodal: true,
     starttime: '6:00',
     endtime: '23:00',
+    startleavetime:"",
+    endleavetime:"",
   },
   //事件处理函数
   sign(e) { //签到
@@ -229,14 +232,34 @@ Page({
   },
   leave(e){
     console.log("点击离开按钮",e)
-    let startime = new Date(Date.parse(new Date()))
-    let starttime = startime.getHours() + ":" + startime.getMinutes()
+    let starttime = new Date(Date.parse(new Date()))
+    starttime = starttime.getHours() + ":" + starttime.getMinutes()
+    let startleavetime = new Date(e.currentTarget.dataset.item.start_time)
+    let time = new Date()
+    let hour = time.getHours()
+    let min = time.getMinutes()
+    if (hour > startleavetime.getHours()) { //预约小时比当前时间早
+      startleavetime = time.getHours() + ":" + time.getMinutes()
+    }
+    else if (hour == startleavetime.getHours() && min >= startleavetime.getMinutes()) { //小时相同,预约分钟比当前分钟小
+      startleavetime = time.getHours() + ":" + time.getMinutes()
+    }
+    else{ //使用预约时间
+      startleavetime = startleavetime.getHours() + ":" + startleavetime.getMinutes()
+    }
+    let endleavetime = new Date(e.currentTarget.dataset.item.end_time)
+    endleavetime = endleavetime.getHours() + ":" + endleavetime.getMinutes()
     // console.log(startime, starttime)
+    hideindex = e.currentTarget.dataset.index
     this.setData({
       starttime: starttime,
       endtime:starttime,
-      hiddenmodal: false
+      startleavetime: startleavetime,
+      endleavetime: endleavetime,
+      hiddenmodal: false,
     })
+    
+
   },
   startTimeChange: function (e) {
     console.log('picker发送选择改变，携带值为', e.detail.value)
@@ -252,7 +275,8 @@ Page({
   },
   confirm(e) {
     let _this = this
-    console.log("用户点击确定", e)
+    console.log("用户点击确定", _this.data.seatmsg[hideindex])
+
     wx.showModal({
       title: '提示',
       content: '确定要在'+_this.data.starttime +'-'+_this.data.endtime+'这段时间里离开座位吗',
@@ -283,8 +307,8 @@ Page({
             }
           }).then((res)=>{
             console.log("更改数据库离开状态",res)
-            is_freedata[e.target.dataset.index] = true
-            can_leavedata[e.target.dataset.index] = false
+            is_freedata[e.target.dataset.index-1] = true
+            can_leavedata[e.target.dataset.index-1] = false
             _this.setData({
               is_free: is_freedata,
               can_leave: can_leavedata,

@@ -18,79 +18,30 @@ Page({
     else {
       console.log("不为空", event.detail.value.stuid)
       //查询姓名和学号是否匹配
-      studb.where({
-        stu_id: event.detail.value.stuid
-      }).get({
-        success(res) {
-          //若匹配
-          //console.log( res)
-          if (res.data.length != 0 && res.data[0].name == event.detail.value.username) {
-            console.log("已匹配", res)
-            console.log(event.detail)
-            //查询是否已被注册
-            userdb.where({
-              student_id: event.detail.value.stuid
-            }).get({
-              success(res) {
-                //已被注册
-                if (res.data.length != 0) {
-                  console.log("被注册")
-                  _this.setData({
-                    errmsg: "姓名和学号已被注册，请联系管理员"
-                  })
-                }
-                //未被注册
-                else {
-                  //console.log("未被注册")
-                  //添加数据！！！！！！！！！！！！！！！！！！！！！！！！！！
-                  userdb.add({
-                    data: {
-                      user_name: event.detail.value.username,
-                      student_id: event.detail.value.stuid,
-                      user_id: app.globalData.userOpenId,
-                      team_id:""
-                      //user_id: 123,
-                    },
-                    // success(res){
-                    //   console("注册成功",res)
-                    //   wx.redirectTo({
-                    //     url: '../index/index',
-                    //   })
-                    // },fail(err){
-                    //   console.log("注册失败",err)
-                    // }
-                  }).then(res => {
-                    if (res.errMsg == "collection.add:ok") {
-                      app.globalData.name = event.detail.value.username
-                      app.globalData.stuid = event.detail.value.stuid
-                      wx.switchTab({
-                        url: '../index/index',
-                      })
-                    } else {
-                      console.log("注册失败", res)
-                    }
-                  })
-                }
-              },
-              fail(err) {
-                console.log("查询是否已注册失败", err)
-              }
+      wx.cloud.callFunction({
+        name: "register",
+        data:{
+          detail:event,
+          openid: app.globalData.userOpenId,
+        },
+        success(res){
+          console.log(res)
+          if (res.result.is_ok){
+            app.globalData.name = event.detail.value.username
+            app.globalData.stuid = event.detail.value.stuid
+            wx.switchTab({
+              url: '../index/index',
             })
           }
-          //若不匹配
-          else {
-            //console.log("不匹配");
+          else{
             _this.setData({
-              errmsg: "姓名或学号不正确"
-            });
+              errmsg:res.result.msg
+            })
           }
-        },
-        fail(err) {
-          console.log("姓名学号匹配查询失败", err)
         }
       })
-    }
     //console.log(event);
+    }
   },
   /**
    * 页面的初始数据

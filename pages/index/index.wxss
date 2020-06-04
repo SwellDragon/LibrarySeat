@@ -15,6 +15,12 @@
   width: 60%;
   background-color: saddlebrown;
 } */
+.item{
+  padding-bottom:5rpx;
+border-bottom-width: 3rpx;
+border-bottom-style: solid;
+border-bottom-color:gainsboro;
+}
 .time{
   font-size: 15px
 }

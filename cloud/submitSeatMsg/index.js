@@ -50,7 +50,7 @@ exports.main = async(event, context) => {
       is_cancel: false,
       is_complete: false,
     }).get()
-  }).then((res) => {
+  }).then(async (res) => {
 
     console.log("冲突查询结果", res)
     let seatmsg = res.data
@@ -59,7 +59,9 @@ exports.main = async(event, context) => {
     console.log("冲突查询元数据", date, seatmsg)
     for (var i = 0; i < seatmsg.length; i++) {
       //查看是否冲突
-
+      console.log("冲突？", date.starttime >= seatmsg[i].start_time && date.starttime <= seatmsg[i].end_time ||
+        date.endtime >= seatmsg[i].start_time && date.endtime <= seatmsg[i].end_time ||
+        date.starttime <= seatmsg[i].start_time && date.endtime >= seatmsg[i].end_time)
       if (date.starttime >= seatmsg[i].start_time && date.starttime <= seatmsg[i].end_time ||
         date.endtime >= seatmsg[i].start_time && date.endtime <= seatmsg[i].end_time ||
         date.starttime <= seatmsg[i].start_time && date.endtime >= seatmsg[i].end_time
@@ -72,7 +74,7 @@ exports.main = async(event, context) => {
   })
   if (count > 1) { //产生冲突,删除刚才添加得数据
     console.log("产生冲突", count)
-    seatdb.doc(_id).remove().then((res) => {
+    await seatdb.doc(_id).remove().then((res) => {
       console.log("删除成功", res.data)
     })
     return {
