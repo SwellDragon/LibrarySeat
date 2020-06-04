@@ -30,29 +30,15 @@
                 </view>
               </view>
               <view class="tui-msg-right {{item.level==3?'tui-right-dot':''}}">
-                <!-- <view class="tui-msg-time">性别：{{item.userInfo.gender==1?'男':'女'}}</view> -->
-                <!-- <tui-tag bindtap="addpeople" style="width:18vw" size="small" tui-tag-class="tui-mrbtm">添加好友</tui-tag> -->
               </view>
             </tui-cell>
           </block>
 
         </view>
       </view>
-
       <view wx:if="{{!inputVal}}">
         <!--不搜索时候的原有界面-->
-
         <view class="container">
-
-          <!-- <view style="width:100vw" class="kind-list" bindtap="pengyouquan">
-            <view class="kind-list_item">
-              <view class="tui-flex kind-list_item-hd">
-                <view class="tui-flex_item"> 朋友圈 </view>
-                <image class="kind-list_img tui-img-7" src="/image/pengyouquan.png"></image>
-              </view>
-            </view>
-          </view> -->
-
           <!-- 好友请求列表-->
           <view wx:if="{{peoplecheck.length!=0}}">
             <view style="width:100vw" class="kind-list">
@@ -86,17 +72,7 @@
 
             </view>
           </view>
-          <!-- 拒绝的代码逻辑还没有想好
-<view wx:for="{{askjujuelist}}" wx:for-index="index" wx:key="key">
-    <image class="userinfo-avatar"  src="{{askjujuelist[index].peopleask.avatarUrl}}"> </image>
-    <text>{{askjujuelist[index].peopleask.nickName}}</text>
-    <button  data-info="{{askjujuelist[index]}}" bindtap="knowjujue"> 知道了</button>
-</view>
--->
-
-
           <!-- 聊天室的东西-->
-          <!-- <view style="width:100vw" class="kind-list" bindtap="openActionSheet"> -->
           <view style="width:100vw" class="kind-list" bindtap="toTeamPage">
             <view class="kind-list_item">
               <view class="tui-flex kind-list_item-hd }}">
@@ -107,15 +83,6 @@
           </view>
 
           <tui-actionsheet show="{{showActionSheet}}" tips="{{tips}}" item-list="{{itemList}}" mask-closable="{{maskClosable}}" color="{{color}}" size="{{size}}" is-cancel="{{isCancel}}" bind:click="itemClick" bind:cancel="closeActionSheet"></tui-actionsheet>
-
-
-          <!-- 
-<button  bindtap="go" data-id="chat0">测试聊天室</button>
-<button bindtap="go" data-id="chat1">聊天室1</button>
-<button  bindtap="go" data-id="chat2">聊天室2</button>
-<button  bindtap="go" data-id="chat3">聊天室3</button>
--->
-
 
           <view style="width:100vw" class="kind-list">
             <view class="kind-list_item">
@@ -134,9 +101,6 @@
                   <view class="tui-msg-content">学号:{{item.friend_stuid}}</view>
                 </view>
               </view>
-              <!-- <view class="tui-msg-right {{item.level==3?'tui-right-dot':''}}">
-                <view class="tui-msg-time">性别：{{item.userInfo.gender==1?'男':'女'}}</view>
-              </view> -->
             </tui-cell>
           </block>
           <view class="tui-safearea-bottom"></view>

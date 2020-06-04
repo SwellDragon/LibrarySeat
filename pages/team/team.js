@@ -212,61 +212,8 @@ let _this = this
     
   },
 
-  //拒绝好友请求相关的云函数
-  knowjujue(e) {
-    let that = this;
-    that.setData({
-      jujuelist: e.currentTarget.dataset.info,
-    })
-    wx.cloud.callFunction({
-      name: 'yunrouter',
-      data: {
-        $url: "knowjujue", //云函数路由参数
-        jujuelist: that.data.jujuelist
-      },
-      success: res => {
-        that.checkpeopleadd();
-      },
-      fail() {
-      }
-    });
-
-  },
   onPullDownRefresh: function () {
     this.onShow()
-  },
-  openActionSheet: function (e) {
-    let itemList = [{
-      text: "确定",
-      color: "#1a1a1a"
-    }];
-    let maskClosable = true;
-    let tips = "选择合适的聊天室";
-    let color = "#9a9a9a";
-    let size = 26;
-    let isCancel = true;
-
-    itemList = [{
-      text: "聊天室1",
-      color: "#1a1a1a"
-    }, {
-      text: "聊天室2",
-      color: "#1a1a1a"
-    }, {
-      text: "聊天室3",
-      color: "#1a1a1a"
-    }]
-    setTimeout(() => {
-      this.setData({
-        showActionSheet: true,
-        itemList: itemList,
-        maskClosable: maskClosable,
-        tips: tips,
-        color: color,
-        size: size,
-        isCancel: isCancel
-      })
-    }, 0)
   },
   closeActionSheet: function () {
     this.setData({
@@ -280,22 +227,6 @@ let _this = this
     wx.navigateTo({
       url: '/pages/team/room/room?id=chat' + index + '&name=' + '聊天室',
     })
-    /*
-    switch(index){
-      case 0:
-        break;
-      case 1:
-         wx.showToast({
-         title:'你点击的按钮索引为：2',
-         icon: 'none',
-         duration:  2000
-        })
-        break;
-        default:
-        break;
-    }
-    */
-
   },
   getheight() {
     const that = this;
@@ -335,9 +266,4 @@ let _this = this
       this.searchpeople(this.data.inputVal)
     })
   },
-  // pengyouquan() {
-  //   wx.navigateTo({
-  //     url: 'pengyouquan/pengyouquan',
-  //   })
-  // }
 })
