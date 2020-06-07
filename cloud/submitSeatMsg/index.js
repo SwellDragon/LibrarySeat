@@ -85,6 +85,7 @@ exports.main = async(event, context) => {
       is_ok:true,
       msg:{
         _openid: submitdata._openid,
+        _id:_id,
         stuid: submitdata.stuid,
         addr: submitdata.addr,
         floor: submitdata.floor,
