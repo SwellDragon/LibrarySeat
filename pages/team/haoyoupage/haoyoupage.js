@@ -7,7 +7,6 @@ Page({
   data: {
     imgList:[],
     backgroundimage:'',
-    des: '欢迎关注公众号【一只拒绝穿格子衫的程序猿】',
     is_friend:0
   },
   onLoad: function (options) {
@@ -72,33 +71,6 @@ Page({
           })
         }
       })
-      
-      // wx.requestSubscribeMessage({
-      //   tmplIds: [TmplId],
-      //   success(res) {
-      //     if (res.errMsg === 'requestSubscribeMessage:ok') {
-      //       wx.cloud.callFunction({
-      //         name: 'yunrouter',
-      //         data: {
-      //           $url: "addpeople", //云函数路由参数
-      //           addpeopleid: that.data.addpeopledetail._openid,//应该应答请求的那个人
-      //           askpeopleid: app.globalData.openid,//我自己，发出请求的人
-      //           peopleask: app.globalData.userInfo,
-      //           peopleadd: that.data.addpeopledetail.userInfo,
-      //           chatid: that.data.addpeopledetail._openid + app.globalData.openid
-      //         },
-      //         success: res => {
-      //           console.log('请求成功')
-      //         },
-      //         fail() {
-      //         }
-      //       });
-      //     }
-      //   },
-      //   fail(re) {
-      //     console.log(re)
-      //   }
-      // })
     }
     else {
       wx.showModal({
@@ -108,19 +80,7 @@ Page({
     }
   },
 
-  //复制
-  copy(e) {
-    wx.setClipboardData({
-      data: e.currentTarget.dataset.copy,
-      success: res => {
-        wx.showToast({
-          title: '复制' + e.currentTarget.dataset.name + '成功',
-          icon: 'success',
-          duration: 1000,
-        })
-      }
-    })
-  },
+  
   chat(){
       let that = this;
       let _this = this;

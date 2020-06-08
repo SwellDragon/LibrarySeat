@@ -63,18 +63,6 @@ Page({
     })
   },
 
-  // getOpenID: async function() {
-  //   if (this.openid) {
-  //     return this.openid
-  //   }
-  //   const { result } = await wx.cloud.callFunction({
-  //     name: 'yunrouter',
-  //     data:{
-  //       $url: "openid"
-  //     }
-  //   })
-  //   return result
-  // },
 
   onGetUserInfo: function(e) {
     if (!this.logged && e.detail.userInfo) {

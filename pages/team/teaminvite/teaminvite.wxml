@@ -21,7 +21,7 @@
           <block wx:for="{{peopledetail}}" wx:key="student_id" wx:for-item="item" wx:for-index="index">
             <tui-cell style="width:100%" tui-cell-class="tui-msg" last="{{true}}"  data-detail="{{item}}">
               <view class="tui-msg-box">
-                <image src="{{item.userInfo.avatarUrl}}" class="tui-msg-pic" mode="widthFix"></image>
+                <image src="{{item.avatarUrl}}" class="tui-msg-pic" mode="widthFix"></image>
                 <view class="tui-msg-item">
                   <view class="tui-msg-name">姓名：{{item.user_name}}</view>
                   <view class="tui-msg-content">学号：{{item.student_id}}</view>
