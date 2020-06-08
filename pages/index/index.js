@@ -79,7 +79,7 @@ function analysis(studata, _this) {
     studata[i].free_startdata = studata[i].free_start.getHours() + ':' + studata[i].free_start.getMinutes() 
     studata[i].free_enddata = studata[i].free_end.getHours() + ':' + studata[i].free_end.getMinutes()
   }
-  // console.log(res)
+  console.log("显示数据",studata)
   _this.setData({
     seatmsg: studata,
     is_sign: is_signdata,
@@ -124,7 +124,7 @@ Page({
         console.log(res)
         // var s = res.result
         // console.log(s)
-        var msg = JSON.parse(res.result.trim())
+        let msg = JSON.parse(res.result.trim())
         console.log(msg)
         console.log(edata)
         if (edata.addr == msg.addr && edata.floor == msg.floor && edata.room == msg.room && edata.row == msg.row && edata.col == msg.col) { //已经到了座位
@@ -173,6 +173,8 @@ Page({
             }
           })
         } else {
+          console.log(edata.addr, msg.addr, edata.floor, msg.floor, edata.room, msg.room, edata.row, msg.row, edata.col , msg.col)
+          console.log(edata.addr == msg.addr,edata.floor == msg.floor,edata.room == msg.room , edata.row == msg.row, edata.col == msg.col)
           wx.showModal({
             title: '提示',
             content: '座位不符',
@@ -282,7 +284,7 @@ Page({
       content: '确定要在'+_this.data.starttime +'-'+_this.data.endtime+'这段时间里离开座位吗',
       success(res) {
         if (res.confirm) {
-          console.log('用户确定离开',e.currentTarget.dataset.detail)
+          console.log('用户确定离开', _this.data.seatmsg[hideindex])
           //更改时间格式
           let starttime = _this.data.starttime.split(':')
           starttime[0] = parseInt(starttime[0])
@@ -299,7 +301,7 @@ Page({
           enddate.setMinutes(endtime[1])
           enddate.setSeconds(0)
           console.log(startdate,enddate)
-          seatdb.doc(e.currentTarget.dataset.detail._id).update({
+          seatdb.doc(_this.data.seatmsg[hideindex]._id).update({
             data:{
               is_free:true,
               free_start:startdate,
@@ -307,17 +309,21 @@ Page({
             }
           }).then((res)=>{
             console.log("更改数据库离开状态",res)
-            is_freedata[e.target.dataset.index-1] = true
-            can_leavedata[e.target.dataset.index-1] = false
+            is_freedata[hideindex] = true
+            can_leavedata[hideindex] = false
+            studata[hideindex].is_free = true
+            studata[hideindex].free_start= startdate
+            studata[hideindex].free_end= enddate
+            app.globalData.stuseatmsg = studata
             _this.setData({
               is_free: is_freedata,
               can_leave: can_leavedata,
-              hiddenmodal: true
+              hiddenmodal: true,
+              seatmsg:studata
             })
-            studata[e.currentTarget.dataset.index].is_free = true
-            app.globalData.stuseatmsg = studata
+            analysis(studata, _this)
           })
-
+          
         } else if (res.cancel) {
           console.log('用户点击取消')
         }
@@ -333,6 +339,7 @@ Page({
 
   onLoad: function() {
     let _this = this
+    studata = []
     this.setData({
       name: app.globalData.name,
       stuid: app.globalData.stuid
