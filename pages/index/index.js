@@ -210,17 +210,20 @@ Page({
               is_canceldata[e.target.dataset.index] = true
               show_canceldata[e.target.dataset.index] = false
               can_signdata[e.target.dataset.index] = false
-              _this.setData({
-                is_cancel: is_canceldata,
-                show_cancel: show_canceldata,
-                can_sign: can_signdata
-              })
+              
               console.log(e)
               // console.log(e.currentTarget.dataset.index)
               console.log("前", studata)
               studata[e.currentTarget.dataset.index].is_cancel = true
               app.globalData.stuseatmsg = studata
               console.log("后", studata)
+              _this.setData({
+                is_cancel: is_canceldata,
+                show_cancel: show_canceldata,
+                can_sign: can_signdata,
+                seatmsg: studata
+              })
+              analysis(studata,_this)
             },
             fail(err) {
               console.log("失败！！！取消预约", )
